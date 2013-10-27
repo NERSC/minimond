@@ -60,10 +60,10 @@ metric_group *meminfo_collect(metric_group *mg) {
 
         s_strncpy(mg->metrics[l].name, buf, size);
 
-        size = value_end - value_begin;
+        size = value_end - value_begin + 1;
         buf[value_begin + size] = '\0';
 
-        mg->metrics[l].val.l = atoi(buf+value_begin)*1024;
+        mg->metrics[l].val.l = atol(buf+value_begin)*1024;
 
         l++;
         if (l > METRIC_GROUP_MAX_SIZE) {

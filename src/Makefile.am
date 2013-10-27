@@ -1,4 +1,4 @@
 bin_PROGRAMS = mingmond
 
-mingmond_SOURCES = main.c storage.c textprinter.c display.c storage.h mingmond.h collector.h collector.c collector_meminfo.c
+mingmond_SOURCES = main.c storage.c display.c storage.h mingmond.h collector.h collector.c collector_meminfo.c printer_text.c printer_gmetric.c
 
