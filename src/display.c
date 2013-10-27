@@ -26,10 +26,13 @@ metric_group *dummy_printer(metric_group *mg) {
             break;
         }
 
-        printf("%s_%s : ",mg->name, m.name);
+        printf("%20s_%-20s : ",mg->name, m.name);
         switch(mg->type) {
             case VALUE_INT:
                 printf("int:%d\n", m.val.i);
+                break;
+            case VALUE_LONG:
+                printf("long:%lu\n", m.val.l);
                 break;
             case VALUE_FLOAT:
                 printf("float%f\n", m.val.f);

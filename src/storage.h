@@ -14,7 +14,7 @@
 #define NAME_MAX 16
 
 /* The maximum number of metrics in a metric group. */
-#define METRIC_GROUP_MAX_SIZE 16
+#define METRIC_GROUP_MAX_SIZE 64
 
 /* The maximum number of metric groups. */
 #define METRIC_GROUPS_MAX 16
@@ -22,6 +22,7 @@
 /* A metric value */
 union metric_value {
     int i;
+    long l;
     char c;
     float f;
     double d;
@@ -31,6 +32,7 @@ typedef union metric_value metric_value;
 /* Various types of metrics; */
 enum metric_type {
     VALUE_INT,
+    VALUE_LONG,
     VALUE_CHAR,
     VALUE_FLOAT,
     VALUE_DOUBLE
