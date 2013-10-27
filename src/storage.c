@@ -32,6 +32,14 @@ int metric_group_is_new(metric_group *mg) {
     return is_new;
 }
 
+int metric_is_new(metric *m) {
+    int is_new = 0;
+    if(!(strcmp(m->name,"NEW"))) {
+        is_new = 1;
+    }
+    return is_new;
+}
+
 metric_group *MetricGroupNextFree(metric_group *mg) {
     int c = 0;
     for(c = 0; c < METRIC_GROUPS_MAX; c++) {
@@ -52,23 +60,15 @@ metric *MetricCreate(metric *m, char *name, metric_type type,
     m->val = val;
     return m;
 
-    /*switch(metric_type) {
-        case VALUE_INT:
-            break;
-        default:
-            fatal_error("Unsupported metric_type");
-            break;
-    }*/
-
 }
 
 char *s_strncpy(char *dest, const char *src, size_t n) {
-    char *val;
+    char *value;
 
-    val = strncpy(dest, src, n);
-    dest[n] = '\0';
+    value = strncpy(dest, src, n);
+    dest[n-1] = '\0';
 
-    return val;
+    return value;
 }
 
 

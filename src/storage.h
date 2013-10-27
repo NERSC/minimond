@@ -84,3 +84,9 @@ char *s_strncpy(char *dest, const char *src, size_t n);
  * Returns 1 if NEW, 0 otherwise
  */
 int metric_group_is_new(metric_group *mg);
+
+/*
+ * Check if a metric is still in a "NEW" state
+ * Returns 1 if NEW, 0 otherwise
+ */
+int metric_is_new(metric *m);

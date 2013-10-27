@@ -1,7 +1,6 @@
 /* display.c */
 
-#include "storage.h"
-#include "display.h"
+#include "mingmond.h"
 #include <stdio.h>
 
 metric_group *MetricsPrint(metric_group *(*print_func)(metric_group *), metric_group *mg) {
@@ -16,9 +15,32 @@ metric_group *MetricsPrint(metric_group *(*print_func)(metric_group *), metric_g
 }
 
 metric_group *dummy_printer(metric_group *mg) {
-    printf("Metric group name: %s\n",mg->name);
-    printf("Metric 0 name: %s\n",mg->metrics[0].name);
-    printf("Metric 0 value: %d\n",mg->metrics[0].val.i);
+    int c = 0;
+    metric m;
+
+    for (c = 0; c < METRIC_GROUP_MAX_SIZE ; c++) {
+
+        m = mg->metrics[c];
+
+        if(metric_is_new(&m)) {
+            break;
+        }
+
+        printf("%s_%s : ",mg->name, m.name);
+        switch(mg->type) {
+            case VALUE_INT:
+                printf("int:%d\n", m.val.i);
+                break;
+            case VALUE_FLOAT:
+                printf("float%f\n", m.val.f);
+                break;
+            default:
+                fatal_error("Unsupported metric type\n");
+                break;
+        }
+    }
+
+
 
     return mg;
 }
