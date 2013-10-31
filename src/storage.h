@@ -11,10 +11,10 @@
  * The maximum length of a metric or metric group name, including the
  * NULL byte.
  */
-#define NAME_MAX 16
+#define NAME_MAX 24
 
 /* The maximum number of metrics in a metric group. */
-#define METRIC_GROUP_MAX_SIZE 64
+#define METRIC_GROUP_MAX_SIZE 1024
 
 /* The maximum number of metric groups. */
 #define METRIC_GROUPS_MAX 16

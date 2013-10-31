@@ -25,9 +25,15 @@ metric_group *dummy_collect(metric_group *mg) {
     return mg;
 }
 
-long unsigned *next_item(long unsigned *d, int *count) {
+unsigned long *next_lu(unsigned long *d, int *count) {
     (*count)++;
     return &d[(*count)-1];
+}
+
+float *next_f(float *f, int *count) {
+    printf("next_f: %d\n",*count);
+    (*count)++;
+    return &f[(*count)-1];
 }
 
 void metric_file_open(FILE **metric_file, const char *filename) {

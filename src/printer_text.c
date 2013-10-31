@@ -24,7 +24,7 @@ metric_group *text_printer(metric_group *mg) {
                 printf("long:%lu\n", m.val.l);
                 break;
             case VALUE_FLOAT:
-                printf("float%f\n", m.val.f);
+                printf("float:%f\n", m.val.f);
                 break;
             default:
                 fatal_error("Unsupported metric type\n");
