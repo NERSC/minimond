@@ -20,7 +20,7 @@ metric_group *loadavg_collect(metric_group *mg) {
     float f[METRIC_GROUP_MAX_SIZE];
 
     const char *labels[] = { "load_one", "load_five", "load_fifteen",
-                             "proc_run", "proc_total"
+                             "proc_run", "proc_total", NULL
                            };
 
     mg->type = VALUE_FLOAT;

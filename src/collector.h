@@ -12,6 +12,7 @@ metric_group *dummy_collect(metric_group *mg);
 metric_group *netdev_collect(metric_group *mg);
 metric_group *diskstats_collect(metric_group *mg);
 metric_group *loadavg_collect(metric_group *mg);
+metric_group *cpustat_collect(metric_group *mg);
 
 void metric_file_open(FILE **metric_file, const char *filename);
 void metric_file_close(FILE *metric_file);

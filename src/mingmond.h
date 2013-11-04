@@ -26,6 +26,7 @@ void fatal_error(char *s);
  * cpu_system     Percentage of CPU utilization that occurred while executing at the system level (module cpu_module)
  * cpu_user       Percentage of CPU utilization that occurred while executing at the user level (module cpu_module)
  * cpu_wio        Percentage of time that the CPU or CPUs were idle during which the system had an outstanding disk I/O request (module cpu_modul
+ * boottime       The last time that the system was started (module sys_module)
  * mem_sreclaimableAmount of reclaimable slab memory (module mem_module)
  * os_release     Operating system release date (module sys_module)
  * mem_total      Total amount of memory displayed in KBs (module mem_module)
@@ -40,7 +41,6 @@ void fatal_error(char *s);
  * bytes_out      Number of bytes out per second (module net_module)
  * mem_free       Amount of available memory (module mem_module)
  * os_name        Operating system name (module sys_module)
- * boottime       The last time that the system was started (module sys_module)
  * sys_clock      Time as reported by the system clock (module sys_module)
  * mem_buffers    Amount of buffered memory (module mem_module)
  * part_max_used  Maximum percent used for all partitions (module disk_module)

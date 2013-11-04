@@ -36,7 +36,6 @@ metric_group *cpustat_collect(metric_group *mg) {
 
     int count = 0;
     int metric_count = 0;
-    int c=0;
     long unsigned d[METRIC_GROUP_MAX_SIZE];
     const char *labels[] = { "cpu_user", "cpu_nice", "cpu_system", "cpu_idle",
                              "cpu_wio", "cpu_intr", "cpu_sintr", "cpu_steal",
@@ -49,30 +48,34 @@ metric_group *cpustat_collect(metric_group *mg) {
     metric_file_open(&cpustat, CPUSTAT);
 
     while (fgets(buf, MAX_LINE, cpustat)) {
-        c=0;
-        /*
-         * cpu  user      nice     sys      idle       iowait   irq    softirq steal guest
-         * cpu  516284101 34772015 48855234 3210397546 94612030 288167 1684015 0     0
-         * %s   d[0]      d[1]     d[2]     d[3]       d[4]     d[5]   d[6]    d[7]  d[8]
-         */
-        count = sscanf(buf,"%s %lu %lu %lu %lu %lu %lu %lu %lu",
-                name_buf,
-                &d[0],
-                &d[1],
-                &d[2],
-                &d[3],
-                &d[4],
-                &d[5],
-                &d[6],
-                &d[7],
-                &d[8],
-                );
+        switch(buf[0]) {
+            case 'c':
+                /*
+                 * cpu  user      nice     sys      idle       iowait   irq    softirq steal guest
+                 * cpu  516284101 34772015 48855234 3210397546 94612030 288167 1684015 0     0
+                 * %s   d[0]      d[1]     d[2]     d[3]       d[4]     d[5]   d[6]    d[7]  d[8]
+                 */
+                /*                       0   1   2   3   4   5   6   7   8 */
+                count = sscanf(buf,"%32s %lu %lu %lu %lu %lu %lu %lu %lu %lu",
+                        name_buf,
+                        &d[0],
+                        &d[1],
+                        &d[2],
+                        &d[3],
+                        &d[4],
+                        &d[5],
+                        &d[6],
+                        &d[7],
+                        &d[8]
+                        );
 
-        printf("Count: %d\n",count);
-        if (count != 8) continue;
+                printf("Count: %d\n",count);
+                break;
+        }
+
+        if (count != 10) continue;
 
         for( count=0 ; labels[count] != NULL; count++, metric_count_incr(&metric_count) ) { 
-
 
             snprintf(name, MAX_LINE, "%s_%s", name_buf, labels[count] );
             s_strncpy(mg->metrics[metric_count].name, name, NAME_MAX);
