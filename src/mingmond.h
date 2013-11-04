@@ -4,7 +4,10 @@
 
 #define COLLECT_PERIOD 300
 
+#define MINGMOND_USER "ganglia"
+
 void fatal_error(char *s);
+void drop_privileges(void);
 
 /*
  * Ganglia metrics:
