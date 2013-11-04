@@ -8,6 +8,8 @@
 
 void fatal_error(char *s);
 void drop_privileges(void);
+void daemonize(void);
+void close_fd(int fd);
 
 /*
  * Ganglia metrics:

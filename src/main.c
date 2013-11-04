@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #include <pwd.h>
 #include <grp.h>
@@ -15,6 +16,7 @@
 
 int main (int argc, char **argv) {
     drop_privileges();
+    daemonize();
 
     printf("Sizeof metric_group(%lu) metric(%lu) all_metric_groups(%lu)\n",sizeof(metric_group), sizeof(metric), sizeof(metric_group)*METRIC_GROUPS_MAX);
 
@@ -73,4 +75,49 @@ void drop_privileges(void) {
       fprintf(stderr, "setresuid to %d failed: %s", mingmond_u->pw_uid, strerror(errno));
       fatal_error("Failed to drop privileges");
     }
+}
+
+void daemonize(void) {
+    pid_t child_pid;
+    pid_t session_id;
+
+    child_pid = fork();
+
+    if (child_pid < 0) {
+        /* Fork failed */
+        fprintf(stderr, "fork() failed: %s\n",strerror(errno));
+        fatal_error("Failed to fork()");
+    }
+    else if (child_pid > 0) {
+        /* Parent process */
+        exit(0);
+    }
+
+    /* Child process */
+    umask(0);
+    session_id = setsid();
+    if (session_id < 0) {
+        fatal_error("Failed to setsid()");
+    }
+
+    
+    if ((chdir("/")) < 0) {
+        fatal_error("Failed to chdir()");
+    }
+
+    
+    close_fd(STDIN_FILENO);
+    close_fd(STDOUT_FILENO);
+    close_fd(STDERR_FILENO);
+
+}
+
+void close_fd(int fd) {
+  int ret;
+  ret = close(fd);
+
+  if(ret != 0) {
+    fprintf(stderr,"close() failed: %s\n",strerror(errno));
+    fatal_error("Failed to close()");
+  }
 }
