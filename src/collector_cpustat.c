@@ -56,7 +56,7 @@ metric_group *cpustat_collect(metric_group *mg) {
                  * %s   d[0]      d[1]     d[2]     d[3]       d[4]     d[5]   d[6]    d[7]  d[8]
                  */
                 /*                       0   1   2   3   4   5   6   7   8 */
-                count = sscanf(buf,"%32s %lu %lu %lu %lu %lu %lu %lu %lu %lu",
+                count = sscanf(buf," %32s %lu %lu %lu %lu %lu %lu %lu %lu %lu",
                         name_buf,
                         &d[0],
                         &d[1],
@@ -69,7 +69,6 @@ metric_group *cpustat_collect(metric_group *mg) {
                         &d[8]
                         );
 
-                printf("Count: %d\n",count);
                 break;
         }
 

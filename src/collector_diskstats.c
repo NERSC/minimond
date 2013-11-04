@@ -43,7 +43,7 @@ metric_group *diskstats_collect(metric_group *mg) {
          * 8      17    sdb1 1887 3905 46336 29476   0    0     0     0     0     28308   29467
          * %*     %*    %s   d[0] d[1] d[2]  d[3]    d[4] d[5]  d[6]  d[7]  d[8]  d[9]    d[10]
          */
-        count = sscanf(buf,"%*d %*d %32[^\t ] %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu",
+        count = sscanf(buf," %*d %*d %32[^\t ] %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu",
                 name_buf,
                 &d[0],
                 &d[1],
@@ -58,7 +58,6 @@ metric_group *diskstats_collect(metric_group *mg) {
                 &d[10]
                 );
 
-        printf("Count: %d\n",count);
         if (count != 12) continue;
 
         for( count=0 ; labels[count] != NULL; count++, metric_count_incr(&metric_count) ) { 

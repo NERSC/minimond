@@ -50,15 +50,18 @@ metric_group *gmetric_printer(metric_group *mg) {
 
 
 
-        printf("system(%s)\n",buf);
+#ifdef DEBUG
+        fprintf(logfile,"system(%s)\n",buf);
+#endif
+
         ret = system(buf);
 
         if(ret < 0) {
-            fprintf(stderr, "system() failed: %d\n", ret);
+            fprintf(logfile, "system() failed: %d\n", ret);
             fatal_error("system() failed");
         }
         else if (ret > 0) {
-            fprintf(stderr, "system() command failed: %d\n", ret);
+            fprintf(logfile, "system() command failed: %d\n", ret);
             fatal_error("system() command failed");
         }
 

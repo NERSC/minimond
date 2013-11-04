@@ -25,7 +25,7 @@ metric_group *meminfo_collect(metric_group *mg) {
     metric_file_open(&meminfo, MEMINFO);
 
     while (fgets(buf, MAX_LINE, meminfo)) {
-        count = sscanf(buf,"%32[^\t :]:%lu",
+        count = sscanf(buf," %32[^\t:]:%lu",
                 name_buf,
                 &metric_value);
 

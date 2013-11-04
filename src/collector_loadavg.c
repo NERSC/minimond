@@ -34,7 +34,7 @@ metric_group *loadavg_collect(metric_group *mg) {
      */
     while (fgets(buf, MAX_LINE, loadavg)) {
         //count = sscanf(buf,"%f %f %f %f/%f %*s",
-        count = sscanf(buf,"%f %f %f %f/%f",
+        count = sscanf(buf," %f %f %f %f/%f",
                 &f[0],
                 &f[1],
                 &f[2],

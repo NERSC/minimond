@@ -14,11 +14,14 @@
 
 #include "collector_meminfo.h"
 
+FILE *logfile;
+
 int main (int argc, char **argv) {
+    open_logfile();
     drop_privileges();
     daemonize();
 
-    printf("Sizeof metric_group(%lu) metric(%lu) all_metric_groups(%lu)\n",sizeof(metric_group), sizeof(metric), sizeof(metric_group)*METRIC_GROUPS_MAX);
+    fprintf(logfile,"Sizeof metric_group(%lu) metric(%lu) all_metric_groups(%lu)\n",sizeof(metric_group), sizeof(metric), sizeof(metric_group)*METRIC_GROUPS_MAX);
 
     metric_group metric_groups[METRIC_GROUPS_MAX];
 
@@ -27,15 +30,18 @@ int main (int argc, char **argv) {
         if(!(MetricGroupGroupCreate(metric_groups))) {
             fatal_error("Failed to create metric group collection.");
         }
-        printf("Sizeof metric_group(%lu) metric(%lu) all_metric_groups(%lu)\n",sizeof(metric_group), sizeof(metric), sizeof(metric_group)*METRIC_GROUPS_MAX);
+        fprintf(logfile,"Sizeof metric_group(%lu) metric(%lu) all_metric_groups(%lu)\n",sizeof(metric_group), sizeof(metric), sizeof(metric_group)*METRIC_GROUPS_MAX);
         MetricsCollect(&meminfo_collect, metric_groups);
         MetricsCollect(&netdev_collect, metric_groups);
         MetricsCollect(&diskstats_collect, metric_groups);
         MetricsCollect(&loadavg_collect, metric_groups);
         MetricsCollect(&cpustat_collect, metric_groups);
-        MetricsPrint(&text_printer, metric_groups);
-        //MetricsPrint(&gmetric_printer, metric_groups);
-        printf("Sizeof metric_group(%lu) metric(%lu) all_metric_groups(%lu)\n",sizeof(metric_group), sizeof(metric), sizeof(metric_group)*METRIC_GROUPS_MAX);
+        //MetricsPrint(&text_printer, metric_groups);
+        MetricsPrint(&gmetric_printer, metric_groups);
+        fprintf(logfile,"Sizeof metric_group(%lu) metric(%lu) all_metric_groups(%lu)\n",sizeof(metric_group), sizeof(metric), sizeof(metric_group)*METRIC_GROUPS_MAX);
+        //fclose(logfile);
+        //open_logfile();
+        fflush(logfile);
         sleep(COLLECT_PERIOD);
     }
 
@@ -43,8 +49,16 @@ int main (int argc, char **argv) {
 }
 
 void fatal_error(char *s) {
-    fprintf(stderr,"%s\n",s);
+    fprintf(logfile,"%s\n",s);
     exit(-1);
+}
+
+void open_logfile(void) {
+    logfile = fopen(MINGMOND_LOG, "w");
+    if(logfile == NULL) {
+        fprintf(logfile,"Failed to open logfile: %s\n",strerror(errno));
+        exit(-1);
+    }
 }
 
 void drop_privileges(void) {
@@ -56,23 +70,23 @@ void drop_privileges(void) {
     mingmond_u = getpwnam(MINGMOND_USER);
 
     if (mingmond_u==NULL) {
-        fprintf(stderr,"getpwnam failed for %s: %s\n",MINGMOND_USER, strerror(errno));
+        fprintf(logfile,"getpwnam failed for %s: %s\n",MINGMOND_USER, strerror(errno));
         fatal_error("Failed to drop privileges");
     }
 
     /* Drop privileges */
     if( setgroups(1, &(mingmond_u->pw_gid)) != 0) {
-      fprintf(stderr, "setgroups() failed: %s", strerror(errno));
+      fprintf(logfile, "setgroups() failed: %s", strerror(errno));
       fatal_error("Failed to drop privileges");
     }
 
     if(setresgid(mingmond_u->pw_gid, mingmond_u->pw_gid, mingmond_u->pw_gid) != 0 ) {
-      fprintf(stderr, "setresgid to %d failed: %s", mingmond_u->pw_gid, strerror(errno));
+      fprintf(logfile, "setresgid to %d failed: %s", mingmond_u->pw_gid, strerror(errno));
       fatal_error("Failed to drop privileges");
     }
 
     if(setresuid(mingmond_u->pw_uid, mingmond_u->pw_uid, mingmond_u->pw_uid) != 0 ) {
-      fprintf(stderr, "setresuid to %d failed: %s", mingmond_u->pw_uid, strerror(errno));
+      fprintf(logfile, "setresuid to %d failed: %s", mingmond_u->pw_uid, strerror(errno));
       fatal_error("Failed to drop privileges");
     }
 }
@@ -85,7 +99,7 @@ void daemonize(void) {
 
     if (child_pid < 0) {
         /* Fork failed */
-        fprintf(stderr, "fork() failed: %s\n",strerror(errno));
+        fprintf(logfile, "fork() failed: %s\n",strerror(errno));
         fatal_error("Failed to fork()");
     }
     else if (child_pid > 0) {
@@ -117,7 +131,7 @@ void close_fd(int fd) {
   ret = close(fd);
 
   if(ret != 0) {
-    fprintf(stderr,"close() failed: %s\n",strerror(errno));
+    fprintf(logfile,"close() failed: %s\n",strerror(errno));
     fatal_error("Failed to close()");
   }
 }

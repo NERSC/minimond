@@ -17,7 +17,7 @@ metric_group *netdev_collect(metric_group *mg) {
 
     char buf[MAX_LINE];
     char name[MAX_LINE];
-    char name_buf[MAX_LINE];
+    char netdev_name_buf[MAX_LINE];
 
     int count = 0;
     int metric_count = 0;
@@ -31,7 +31,6 @@ metric_group *netdev_collect(metric_group *mg) {
     s_strncpy(mg->name, "netdev", NAME_MAX);
 
     metric_file_open(&netdev, NET_DEV);
-    //netdev = fopen(NET_DEV, "r");
 
     while (fgets(buf, MAX_LINE, netdev)) {
         c=0;
@@ -39,8 +38,8 @@ metric_group *netdev_collect(metric_group *mg) {
          * iface:bytes packets errs drop fifo frame compressed multicast bytes packets errs drop fifo colls carrier compressed
          * %s   :d[0]  d[1]    d[2] d[3] d[4] d[5]  d[6]       d[7]      d[8]  d[9]    d[10]d[11]d[12]d[13] d[14]   d[15]
          */
-        count = sscanf(buf,"%*[\t ]%32[^\t :]:%lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu",
-                name_buf,
+        count = sscanf(buf," %32[^\t:]:%lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu",
+                netdev_name_buf,
                 &d[0],
                 &d[1],
                 &d[2],
@@ -59,13 +58,13 @@ metric_group *netdev_collect(metric_group *mg) {
                 &d[15]
                 );
 
-        printf("Count: %d\n",count);
         if (count != 17) continue;
+
 
         for( count=0 ; labels[count] != NULL; count++, metric_count_incr(&metric_count) ) { 
 
 
-            snprintf(name, MAX_LINE, "%s_%s", name_buf, labels[count] );
+            snprintf(name, MAX_LINE, "%s_%s", netdev_name_buf, labels[count] );
             s_strncpy(mg->metrics[metric_count].name, name, NAME_MAX);
             mg->metrics[metric_count].val.l = d[count];
 

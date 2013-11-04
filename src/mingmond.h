@@ -5,11 +5,15 @@
 #define COLLECT_PERIOD 300
 
 #define MINGMOND_USER "ganglia"
+#define MINGMOND_LOG "/var/log/mingmond.log"
+
+extern FILE *logfile;
 
 void fatal_error(char *s);
 void drop_privileges(void);
 void daemonize(void);
 void close_fd(int fd);
+void open_logfile(void);
 
 /*
  * Ganglia metrics:
