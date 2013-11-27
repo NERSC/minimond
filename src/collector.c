@@ -41,16 +41,40 @@ void metric_file_open(FILE **metric_file, const char *filename) {
     *metric_file = fopen(filename, "r");
 
     if(*metric_file == NULL) {
-        fprintf(stderr, "Could not open %s: %s\n",
+        fprintf(logfile, "Could not open %s: %s\n",
                 filename,strerror(errno));
         fatal_error("Could not open file");
     }
 }
 
+void metric_file_popen(FILE **metric_file, const char *cmdline) {
+
+    *metric_file = popen(cmdline, "r");
+
+    if(*metric_file == NULL) {
+        fprintf(logfile, "Could not popen %s: %s\n",
+                cmdline,strerror(errno));
+        fatal_error("Could not popen command");
+    }
+}
+
+void metric_file_pclose(FILE *metric_file) {
+
+    int exit_status = -1;
+
+    exit_status = pclose(metric_file);
+    if(exit_status != 0) {
+        fprintf(logfile, "Could not pclose %s: %s; exit status %d\n",
+                "metric file",strerror(errno),exit_status);
+        fatal_error("Could not pclose metric file");
+    }
+
+}
+
 void metric_file_close(FILE *metric_file) {
 
     if(fclose(metric_file) != 0) {
-        fprintf(stderr, "Could not close %s: %s\n",
+        fprintf(logfile, "Could not close %s: %s\n",
                 "metric file",strerror(errno));
         fatal_error("Could not close metric file");
     }

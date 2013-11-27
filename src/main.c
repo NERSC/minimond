@@ -31,13 +31,17 @@ int main (int argc, char **argv) {
             fatal_error("Failed to create metric group collection.");
         }
         fprintf(logfile,"Sizeof metric_group(%lu) metric(%lu) all_metric_groups(%lu)\n",sizeof(metric_group), sizeof(metric), sizeof(metric_group)*METRIC_GROUPS_MAX);
+
         MetricsCollect(&meminfo_collect, metric_groups);
         MetricsCollect(&netdev_collect, metric_groups);
         MetricsCollect(&diskstats_collect, metric_groups);
         MetricsCollect(&loadavg_collect, metric_groups);
         MetricsCollect(&cpustat_collect, metric_groups);
-        //MetricsPrint(&text_printer, metric_groups);
+        MetricsCollect(&micsmc_collect, metric_groups);
+
+        MetricsPrint(&text_printer, metric_groups);
         MetricsPrint(&gmetric_printer, metric_groups);
+
         fprintf(logfile,"Sizeof metric_group(%lu) metric(%lu) all_metric_groups(%lu)\n",sizeof(metric_group), sizeof(metric), sizeof(metric_group)*METRIC_GROUPS_MAX);
         //fclose(logfile);
         //open_logfile();
