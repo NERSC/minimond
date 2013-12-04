@@ -15,16 +15,17 @@ metric_group *text_printer(metric_group *mg) {
             break;
         }
 
-        fprintf(logfile,"%20s_%-20s : ",mg->name, m.name);
+        log_str(LOG_EMERG,"%20s_%-20s : ",mg->name, m.name);
+        //fprintf(stderr,"%20s_%-20s : ",mg->name, m.name);
         switch(mg->type) {
             case VALUE_INT:
-                fprintf(logfile,"int:%d\n", m.val.i);
+                log_str(LOG_EMERG,"int:%d\n", m.val.i);
                 break;
             case VALUE_LONG:
-                fprintf(logfile,"long:%lu\n", m.val.l);
+                log_str(LOG_EMERG,"long:%lu\n", m.val.l);
                 break;
             case VALUE_FLOAT:
-                fprintf(logfile,"float:%f\n", m.val.f);
+                log_str(LOG_EMERG,"float:%f\n", m.val.f);
                 break;
             default:
                 fatal_error("Unsupported metric type\n");

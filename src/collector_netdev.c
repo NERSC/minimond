@@ -9,7 +9,6 @@
 #include "errno.h"
 
 #define NET_DEV "/proc/net/dev"
-#define MAX_LINE 400
 
 
 metric_group *netdev_collect(metric_group *mg) {

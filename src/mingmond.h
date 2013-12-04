@@ -2,18 +2,30 @@
 #include "collector.h"
 #include "display.h"
 
+/* Log messages to stdout */
+#define DEBUG_FG 1
+#define DAEMONIZE 0
+
 #define COLLECT_PERIOD 300
 
-#define MINGMOND_USER "ganglia"
+#define MAX_LINE 400
+
+#define MINGMOND_USER "larry"
 #define MINGMOND_LOG "/var/log/mingmond.log"
+
+#define LOG_DEBUG 7
+#define LOG_EMERG 0
 
 extern FILE *logfile;
 
-void fatal_error(char *s);
-void drop_privileges(void);
-void daemonize(void);
 void close_fd(int fd);
+void daemonize(void);
+void drop_privileges(void);
+void fatal_error(char *format_str, ...);
+void vlog(int log_level, char *format_str, va_list args);
+void log_str(int log_level, char *format_str, ...);
 void open_logfile(void);
+void close_logfile(void);
 
 /*
  * Ganglia metrics:
