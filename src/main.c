@@ -13,7 +13,7 @@
 
 #include "collector_meminfo.h"
 
-FILE *logfile;
+extern FILE *logfile;
 
 int main (int argc, char **argv) {
     open_logfile();

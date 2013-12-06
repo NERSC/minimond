@@ -6,6 +6,8 @@
 #include <string.h>
 #include "mingmond.h"
 
+FILE *logfile;
+
 void vlog(int log_level, char *format_str, va_list args) {
     char buf[MAX_LINE];
     snprintf(buf, MAX_LINE, format_str, args);
