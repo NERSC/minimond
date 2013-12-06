@@ -12,6 +12,17 @@
 
 metric_group *meminfo_collect(metric_group *mg) {
     FILE *meminfo = NULL;
+    metric_file_open(&meminfo, MEMINFO);
+
+    meminfo_collect_from_file(mg, meminfo);
+
+    metric_file_close(meminfo);
+
+    return mg;
+}
+
+metric_group *meminfo_collect_from_file(metric_group *mg, FILE *f) {
+
     char buf[MAX_LINE];
     char name_buf[MAX_LINE];
     int count = 0;
@@ -21,9 +32,8 @@ metric_group *meminfo_collect(metric_group *mg) {
     mg->type = VALUE_LONG;
     s_strncpy(mg->name, "meminfo", NAME_MAX);
 
-    metric_file_open(&meminfo, MEMINFO);
 
-    while (fgets(buf, MAX_LINE, meminfo)) {
+    while (fgets(buf, MAX_LINE, f)) {
         count = sscanf(buf," %32[^\t:]:%lu",
                 name_buf,
                 &metric_value);
@@ -37,7 +47,6 @@ metric_group *meminfo_collect(metric_group *mg) {
 
     }
 
-    metric_file_close(meminfo);
 
     return mg;
 }

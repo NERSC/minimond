@@ -76,7 +76,7 @@ void daemonize(void) {
     close_fd(STDOUT_FILENO);
     close_fd(STDERR_FILENO);
     close_logfile();
-    open_logfile();
+    open_logfile(MINGMOND_LOG);
 
 }
 
@@ -89,3 +89,14 @@ void close_fd(int fd) {
     fatal_error("Failed to close()");
   }
 }
+
+void file_open(FILE **f, const char *filename, const char *bits) {
+    *f = fopen(filename, bits);
+
+    if(*f == NULL) {
+        fatal_error("Could not open %s: %s\n",
+                filename,strerror(errno));
+    }
+}
+
+

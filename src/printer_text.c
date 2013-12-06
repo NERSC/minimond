@@ -28,7 +28,7 @@ metric_group *text_printer(metric_group *mg) {
                 log_str(LOG_EMERG,"float:%f\n", m.val.f);
                 break;
             default:
-                fatal_error("Unsupported metric type\n");
+                fatal_error("Unsupported metric type %d\n", mg->type);
                 break;
         }
     }

@@ -24,8 +24,9 @@ void drop_privileges(void);
 void fatal_error(char *format_str, ...);
 void vlog(int log_level, char *format_str, va_list args);
 void log_str(int log_level, char *format_str, ...);
-void open_logfile(void);
+void open_logfile(char *filename);
 void close_logfile(void);
+void file_open(FILE **f, const char *filename, const char *bits);
 
 /*
  * Ganglia metrics:

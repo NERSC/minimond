@@ -7,11 +7,12 @@
 #include "mingmond.h"
 
 FILE *logfile;
+int log_active = 0;
 
 void vlog(int log_level, char *format_str, va_list args) {
     char buf[MAX_LINE];
-    snprintf(buf, MAX_LINE, format_str, args);
-    fputs(buf, logfile);
+    vsnprintf(buf, MAX_LINE, format_str, args);
+    if(log_active) fputs(buf, logfile);
 #if DEBUG_FG == 1
     fputs(buf, stderr);
 #endif
@@ -33,14 +34,12 @@ void fatal_error(char *format_str, ...) {
 }
 
 
-void open_logfile(void) {
-    logfile = fopen(MINGMOND_LOG, "w");
-    if(logfile == NULL) {
-        fprintf(stderr,"Failed to open logfile: %s\n",strerror(errno));
-        exit(-1);
-    }
+void open_logfile(char *filename) {
+    file_open(&logfile, filename, "w");
+    log_active = 1;
 }
 
 void close_logfile(void) {
     fclose(logfile);
+    log_active = 0;
 }
