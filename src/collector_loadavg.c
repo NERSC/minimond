@@ -9,7 +9,6 @@
 #include "errno.h"
 
 #define LOADAVG "/proc/loadavg"
-#define MAX_LINE 100
 
 metric_group *loadavg_collect(metric_group *mg) {
     FILE *loadavg = NULL;

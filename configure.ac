@@ -12,13 +12,14 @@ AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_MACRO_DIR([m4])
 
 AC_PROG_CC
-CFLAGS="-Wall -Werror -g"
+CFLAGS="-Wall -Werror"
 AC_SUBST(CFLAGS)
 
 AM_INIT_AUTOMAKE
+AM_PROG_CC_C_O
 
-AM_PATH_CHECK()
+PKG_CHECK_MODULES([CHECK], [check >= 0.9.4]) 
 
 AM_CONFIG_HEADER(config.h)
 
-AC_OUTPUT(Makefile src/Makefile)
+AC_OUTPUT(Makefile src/Makefile tests/Makefile)

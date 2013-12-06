@@ -9,7 +9,6 @@
 #include "errno.h"
 
 #define DISKSTATS "/proc/diskstats"
-#define MAX_LINE 400
 
 
 metric_group *diskstats_collect(metric_group *mg) {

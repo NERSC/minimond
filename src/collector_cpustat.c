@@ -9,7 +9,6 @@
 #include "errno.h"
 
 #define CPUSTAT "/proc/stat"
-#define MAX_LINE 400
 
 /*
  * cpu_aidle      Percent of time since boot idle CPU (module cpu_module)

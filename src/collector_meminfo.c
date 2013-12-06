@@ -9,7 +9,6 @@
 #include "errno.h"
 
 #define MEMINFO "/proc/meminfo"
-#define MAX_LINE 100
 
 metric_group *meminfo_collect(metric_group *mg) {
     FILE *meminfo = NULL;
