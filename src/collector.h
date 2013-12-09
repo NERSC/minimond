@@ -16,6 +16,7 @@ metric_group *cpustat_collect(metric_group *mg);
 metric_group *micsmc_collect(metric_group *mg);
 
 metric_group *meminfo_collect_from_file(metric_group *mg, FILE *f);
+metric_group *diskstats_collect_from_file(metric_group *mg, FILE *f);
 
 void metric_file_open(FILE **metric_file, const char *filename);
 void metric_file_close(FILE *metric_file);

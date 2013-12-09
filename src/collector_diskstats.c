@@ -13,6 +13,16 @@
 
 metric_group *diskstats_collect(metric_group *mg) {
     FILE *diskstats = NULL;
+    metric_file_open(&diskstats, DISKSTATS);
+
+    meminfo_collect_from_file(mg, diskstats);
+
+    metric_file_close(diskstats);
+
+    return mg;
+}
+
+metric_group *diskstats_collect_from_file(metric_group *mg, FILE *f) {
 
     char buf[MAX_LINE];
     char name[MAX_LINE];
@@ -33,9 +43,7 @@ metric_group *diskstats_collect(metric_group *mg) {
     mg->type = VALUE_LONG;
     s_strncpy(mg->name, "diskstats", NAME_MAX);
 
-    metric_file_open(&diskstats, DISKSTATS);
-
-    while (fgets(buf, MAX_LINE, diskstats)) {
+    while (fgets(buf, MAX_LINE, f)) {
         c=0;
         /*
          * maj    min   dev  rIO  rMer rSec  rTick   wIO  wMer  wSec  wTick inFli ioTick  inQueue
@@ -70,8 +78,6 @@ metric_group *diskstats_collect(metric_group *mg) {
 
     }
 
-
-    metric_file_close(diskstats);
 
     return mg;
 }
