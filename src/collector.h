@@ -9,14 +9,19 @@ metric_group *MetricsCollect(metric_group
 /* A very simple collection function for test purposes */
 metric_group *dummy_collect(metric_group *mg);
 
-metric_group *netdev_collect(metric_group *mg);
+metric_group *cpustat_collect(metric_group *mg);
 metric_group *diskstats_collect(metric_group *mg);
 metric_group *loadavg_collect(metric_group *mg);
-metric_group *cpustat_collect(metric_group *mg);
+metric_group *meminfo_collect(metric_group *mg);
 metric_group *micsmc_collect(metric_group *mg);
+metric_group *netdev_collect(metric_group *mg);
 
-metric_group *meminfo_collect_from_file(metric_group *mg, FILE *f);
+metric_group *cpustat_collect_from_file(metric_group *mg, FILE *f);
 metric_group *diskstats_collect_from_file(metric_group *mg, FILE *f);
+metric_group *loadavg_collect_from_file(metric_group *mg, FILE *f);
+metric_group *meminfo_collect_from_file(metric_group *mg, FILE *f);
+metric_group *micsmc_collect_from_file(metric_group *mg, FILE *f);
+metric_group *netdev_collect_from_file(metric_group *mg, FILE *f);
 
 void metric_file_open(FILE **metric_file, const char *filename);
 void metric_file_close(FILE *metric_file);

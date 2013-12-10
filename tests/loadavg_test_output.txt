@@ -1,0 +1,5 @@
+             loadavg_load_one             : float:0.500000
+             loadavg_load_five            : float:0.490000
+             loadavg_load_fifteen         : float:0.470000
+             loadavg_proc_run             : float:2.000000
+             loadavg_proc_total           : float:787.000000

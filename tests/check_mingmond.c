@@ -10,6 +10,22 @@
 #define DISKINFO_TEST_LOG "diskinfo_test_log.txt"
 #define DISKINFO_TEST_OUTPUT "diskinfo_test_output.txt"
 
+#define NETDEV_TEST "netdev_test_input.txt"
+#define NETDEV_TEST_LOG "netdev_test_log.txt"
+#define NETDEV_TEST_OUTPUT "netdev_test_output.txt"
+
+#define CPUSTAT_TEST "cpustat_test_input.txt"
+#define CPUSTAT_TEST_LOG "cpustat_test_log.txt"
+#define CPUSTAT_TEST_OUTPUT "cpustat_test_output.txt"
+
+#define LOADAVG_TEST "loadavg_test_input.txt"
+#define LOADAVG_TEST_LOG "loadavg_test_log.txt"
+#define LOADAVG_TEST_OUTPUT "loadavg_test_output.txt"
+
+#define MICSMC_TEST "micsmc_test_input.txt"
+#define MICSMC_TEST_LOG "micsmc_test_log.txt"
+#define MICSMC_TEST_OUTPUT "micsmc_test_output.txt"
+
 /* Compare the contents of file1 and file2. */
 int compare_files(char *file1, char *file2) {
 
@@ -101,10 +117,38 @@ START_TEST (test_meminfo_collect) {
 }
 END_TEST
 
-/* Test the diskinfo collector */
-START_TEST (test_diskinfo_collect) {
+/* Test the diskstats collector */
+START_TEST (test_diskstats_collect) {
     metric_collection(diskstats_collect_from_file, DISKINFO_TEST, DISKINFO_TEST_LOG);
     ck_assert(compare_files(DISKINFO_TEST_LOG,DISKINFO_TEST_OUTPUT));
+}
+END_TEST
+
+/* Test the netdev collector */
+START_TEST (test_netdev_collect) {
+    metric_collection(netdev_collect_from_file, NETDEV_TEST, NETDEV_TEST_LOG);
+    ck_assert(compare_files(NETDEV_TEST_LOG,NETDEV_TEST_OUTPUT));
+}
+END_TEST
+
+/* Test the cpustat collector */
+START_TEST (test_cpustat_collect) {
+    metric_collection(cpustat_collect_from_file, CPUSTAT_TEST, CPUSTAT_TEST_LOG);
+    ck_assert(compare_files(CPUSTAT_TEST_LOG,CPUSTAT_TEST_OUTPUT));
+}
+END_TEST
+
+/* Test the loadavg collector */
+START_TEST (test_loadavg_collect) {
+    metric_collection(loadavg_collect_from_file, LOADAVG_TEST, LOADAVG_TEST_LOG);
+    ck_assert(compare_files(LOADAVG_TEST_LOG,LOADAVG_TEST_OUTPUT));
+}
+END_TEST
+
+/* Test the micsmc collector */
+START_TEST (test_micsmc_collect) {
+    metric_collection(micsmc_collect_from_file, MICSMC_TEST, MICSMC_TEST_LOG);
+    ck_assert(compare_files(MICSMC_TEST_LOG,MICSMC_TEST_OUTPUT));
 }
 END_TEST
 
@@ -116,8 +160,12 @@ Suite *mingmond_suite (void) {
 
   tcase_add_test (tc_main, test_MetricGroupGroupCreate);
   tcase_add_test (tc_main, test_dummy_collect);
+  tcase_add_test (tc_main, test_cpustat_collect);
+  tcase_add_test (tc_main, test_diskstats_collect);
+  tcase_add_test (tc_main, test_loadavg_collect);
   tcase_add_test (tc_main, test_meminfo_collect);
-  tcase_add_test (tc_main, test_diskinfo_collect);
+  tcase_add_test (tc_main, test_micsmc_collect);
+  tcase_add_test (tc_main, test_netdev_collect);
 
   suite_add_tcase (s, tc_main);
 

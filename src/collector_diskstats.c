@@ -15,7 +15,7 @@ metric_group *diskstats_collect(metric_group *mg) {
     FILE *diskstats = NULL;
     metric_file_open(&diskstats, DISKSTATS);
 
-    meminfo_collect_from_file(mg, diskstats);
+    diskstats_collect_from_file(mg, diskstats);
 
     metric_file_close(diskstats);
 

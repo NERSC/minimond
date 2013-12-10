@@ -10,9 +10,18 @@
 
 #define NET_DEV "/proc/net/dev"
 
-
 metric_group *netdev_collect(metric_group *mg) {
     FILE *netdev = NULL;
+    metric_file_open(&netdev, NET_DEV);
+
+    netdev_collect_from_file(mg, netdev);
+
+    metric_file_close(netdev);
+
+    return mg;
+}
+
+metric_group *netdev_collect_from_file(metric_group *mg, FILE *f) {
 
     char buf[MAX_LINE];
     char name[MAX_LINE];
@@ -29,9 +38,7 @@ metric_group *netdev_collect(metric_group *mg) {
     mg->type = VALUE_LONG;
     s_strncpy(mg->name, "netdev", NAME_MAX);
 
-    metric_file_open(&netdev, NET_DEV);
-
-    while (fgets(buf, MAX_LINE, netdev)) {
+    while (fgets(buf, MAX_LINE, f)) {
         c=0;
         /*
          * iface:bytes packets errs drop fifo frame compressed multicast bytes packets errs drop fifo colls carrier compressed
@@ -72,7 +79,6 @@ metric_group *netdev_collect(metric_group *mg) {
     }
 
 
-    metric_file_close(netdev);
 
     return mg;
 }

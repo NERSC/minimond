@@ -28,7 +28,16 @@
 
 metric_group *cpustat_collect(metric_group *mg) {
     FILE *cpustat = NULL;
+    metric_file_open(&cpustat, CPUSTAT);
 
+    cpustat_collect_from_file(mg, cpustat);
+
+    metric_file_close(cpustat);
+
+    return mg;
+}
+
+metric_group *cpustat_collect_from_file(metric_group *mg, FILE *f) {
     char buf[MAX_LINE];
     char name[MAX_LINE];
     char name_buf[MAX_LINE];
@@ -44,9 +53,7 @@ metric_group *cpustat_collect(metric_group *mg) {
     mg->type = VALUE_LONG;
     s_strncpy(mg->name, "cpustat", NAME_MAX);
 
-    metric_file_open(&cpustat, CPUSTAT);
-
-    while (fgets(buf, MAX_LINE, cpustat)) {
+    while (fgets(buf, MAX_LINE, f)) {
         switch(buf[0]) {
             case 'c':
                 /*
@@ -82,9 +89,6 @@ metric_group *cpustat_collect(metric_group *mg) {
         }
 
     }
-
-
-    metric_file_close(cpustat);
 
     return mg;
 }
