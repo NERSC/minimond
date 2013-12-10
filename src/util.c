@@ -1,6 +1,7 @@
 /* mingmond */
 
 #define _GNU_SOURCE
+#include <ctype.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -99,4 +100,9 @@ void file_open(FILE **f, const char *filename, const char *bits) {
     }
 }
 
+void str_nospaces(char *s) {
+    for ( ; *s; s++ ) {
+        if (*s == ' ') *s = '_';
+    }
+}
 

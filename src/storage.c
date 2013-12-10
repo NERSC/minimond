@@ -62,6 +62,11 @@ metric *MetricCreate(metric *m, char *name, metric_type type,
 
 }
 
+void MetricSetName(metric_group *mg, int count, char *name) {
+    str_nospaces(name);
+    s_strncpy(mg->metrics[count].name, name, NAME_MAX);
+}
+
 char *s_strncpy(char *dest, const char *src, size_t n) {
     char *value;
 

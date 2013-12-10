@@ -28,6 +28,9 @@ void open_logfile(char *filename);
 void close_logfile(void);
 void file_open(FILE **f, const char *filename, const char *bits);
 
+/* Replace all spaces in s with underscores */
+void str_nospaces(char *s);
+
 /*
  * Ganglia metrics:
  *

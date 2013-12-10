@@ -71,7 +71,9 @@ metric_group *diskstats_collect_from_file(metric_group *mg, FILE *f) {
 
 
             snprintf(name, MAX_LINE, "%s_%s", name_buf, labels[count] );
-            s_strncpy(mg->metrics[metric_count].name, name, NAME_MAX);
+
+            MetricSetName(mg, metric_count, name);
+
             mg->metrics[metric_count].val.l = d[count];
 
         }

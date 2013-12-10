@@ -69,6 +69,9 @@ metric_group *MetricGroupCreate(metric_group *mg, char *name);
 metric *MetricCreate(metric *m, char *name, metric_type type,
         metric_value val);
 
+/* Set the name of metric number count in group mg to name */
+void MetricSetName(metric_group *mg, int count, char *name);
+
 /*
  * Return a pointer to the next metric_group in the array at *mg that
  * is still in a "NEW" state
