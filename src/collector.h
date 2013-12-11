@@ -32,3 +32,5 @@ unsigned long *next_lu(unsigned long *d, int *count);
 float *next_f(float *f, int *count);
 
 void metric_count_incr(int *metric_count);
+void micsmc_insert_metric(metric_group *mg, int *metric_count, char
+        *mic_name, char *name_buf, float f);
