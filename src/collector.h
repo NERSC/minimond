@@ -1,10 +1,15 @@
 /* collector.h */
 
-#include <stdio.h>
+#ifndef COLLECTOR_H
+#define COLLECTOR_H
 
-/* Collect metrics for metric_group mg using collector_func */
-metric_group *MetricsCollect(metric_group
-        *(*collector_func)(metric_group *), metric_group *mg);
+#include <stdio.h>
+#include "storage-model.h"
+
+
+/* Collect metrics for metric_collection mc using collector_func */
+metric_group *MetricsCollect(MetricHandler *collector_func,
+        metric_collection *mc);
 
 /* A very simple collection function for test purposes */
 metric_group *dummy_collect(metric_group *mg);
@@ -34,3 +39,5 @@ float *next_f(float *f, int *count);
 void metric_count_incr(int *metric_count);
 void micsmc_insert_metric(metric_group *mg, int *metric_count, char
         *mic_name, char *name_buf, float f);
+
+#endif /* DISPLAH_H */

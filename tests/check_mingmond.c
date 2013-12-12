@@ -26,6 +26,9 @@
 #define MICSMC_TEST_LOG "micsmc_test_log.txt"
 #define MICSMC_TEST_OUTPUT "micsmc_test_output.txt"
 
+#define PROCESS_ALL_TEST_LOG "process_all_test_log.txt"
+#define PROCESS_ALL_TEST_OUTPUT "process_all_test_output.txt"
+
 /* Compare the contents of file1 and file2. */
 int compare_files(char *file1, char *file2) {
 
@@ -61,10 +64,10 @@ int compare_files(char *file1, char *file2) {
 
 /* Test that a set of metric groups can be created. */
 START_TEST (test_MetricGroupGroupCreate) {
-    metric_group metric_groups[METRIC_GROUPS_MAX];
-    MetricGroupGroupCreate(metric_groups);
+    metric_collection mc;
+    MetricCollectionCreate(&mc);
 
-    ck_assert_str_eq(metric_groups[0].name, "NEW");
+    ck_assert_str_eq(mc.mg[0].name, "NEW");
 
 }
 END_TEST
@@ -95,60 +98,73 @@ START_TEST (test_dummy_collect) {
 END_TEST
 
 
-void metric_collection(metric_group *(*collector_func)(metric_group *, FILE *), char *in, char *log) {
+void metric_collection_do(
+        metric_group *(*collector_func)(metric_group *, FILE *),
+        char *in, char *log) {
     open_logfile(log);
     FILE *mf = NULL;
-    metric_group mgs[METRIC_GROUPS_MAX];
-    MetricGroupGroupCreate(mgs);
-    ck_assert_str_eq(mgs[0].name, "NEW");
+    metric_collection mc;
+    MetricCollectionCreate(&mc);
+    ck_assert_str_eq(mc.mg[0].name, "NEW");
 
     metric_file_open(&mf, in);
 
-    collector_func(mgs, mf);
+    collector_func(&(mc.mg[0]), mf);
     metric_file_close(mf);
-    MetricsPrint(&text_printer, mgs);
+    MetricsPrint(&text_printer, &mc);
     close_logfile();
 }
 
 /* Test the meminfo collector */
 START_TEST (test_meminfo_collect) {
-    metric_collection(meminfo_collect_from_file, MEMINFO_TEST, MEMINFO_TEST_LOG);
+    metric_collection_do(meminfo_collect_from_file, MEMINFO_TEST, MEMINFO_TEST_LOG);
     ck_assert(compare_files(MEMINFO_TEST_LOG,MEMINFO_TEST_OUTPUT));
 }
 END_TEST
 
 /* Test the diskstats collector */
 START_TEST (test_diskstats_collect) {
-    metric_collection(diskstats_collect_from_file, DISKINFO_TEST, DISKINFO_TEST_LOG);
+    metric_collection_do(diskstats_collect_from_file, DISKINFO_TEST, DISKINFO_TEST_LOG);
     ck_assert(compare_files(DISKINFO_TEST_LOG,DISKINFO_TEST_OUTPUT));
 }
 END_TEST
 
 /* Test the netdev collector */
 START_TEST (test_netdev_collect) {
-    metric_collection(netdev_collect_from_file, NETDEV_TEST, NETDEV_TEST_LOG);
+    metric_collection_do(netdev_collect_from_file, NETDEV_TEST, NETDEV_TEST_LOG);
     ck_assert(compare_files(NETDEV_TEST_LOG,NETDEV_TEST_OUTPUT));
 }
 END_TEST
 
 /* Test the cpustat collector */
 START_TEST (test_cpustat_collect) {
-    metric_collection(cpustat_collect_from_file, CPUSTAT_TEST, CPUSTAT_TEST_LOG);
+    metric_collection_do(cpustat_collect_from_file, CPUSTAT_TEST, CPUSTAT_TEST_LOG);
     ck_assert(compare_files(CPUSTAT_TEST_LOG,CPUSTAT_TEST_OUTPUT));
 }
 END_TEST
 
 /* Test the loadavg collector */
 START_TEST (test_loadavg_collect) {
-    metric_collection(loadavg_collect_from_file, LOADAVG_TEST, LOADAVG_TEST_LOG);
+    metric_collection_do(loadavg_collect_from_file, LOADAVG_TEST, LOADAVG_TEST_LOG);
     ck_assert(compare_files(LOADAVG_TEST_LOG,LOADAVG_TEST_OUTPUT));
 }
 END_TEST
 
 /* Test the micsmc collector */
 START_TEST (test_micsmc_collect) {
-    metric_collection(micsmc_collect_from_file, MICSMC_TEST, MICSMC_TEST_LOG);
+    metric_collection_do(micsmc_collect_from_file, MICSMC_TEST, MICSMC_TEST_LOG);
     ck_assert(compare_files(MICSMC_TEST_LOG,MICSMC_TEST_OUTPUT));
+}
+END_TEST
+
+/*
+ * Test that running all collector/printer combos at once completes
+ * normally
+ */
+START_TEST (test_process_all) {
+    open_logfile(PROCESS_ALL_TEST_LOG);
+    process_all();
+    close_logfile();
 }
 END_TEST
 
@@ -166,6 +182,7 @@ Suite *mingmond_suite (void) {
   tcase_add_test (tc_main, test_meminfo_collect);
   tcase_add_test (tc_main, test_micsmc_collect);
   tcase_add_test (tc_main, test_netdev_collect);
+  tcase_add_test (tc_main, test_process_all);
 
   suite_add_tcase (s, tc_main);
 

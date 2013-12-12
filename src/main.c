@@ -1,51 +1,33 @@
 /* mingmond */
 
-#include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <pwd.h>
-#include <grp.h>
 #include "mingmond.h"
-
-#include "collector_meminfo.h"
 
 extern FILE *logfile;
 
 int main (int argc, char **argv) {
+
+#ifdef MINGMOND_LOG
     open_logfile(MINGMOND_LOG);
+#endif
 
 #if DAEMONIZE == 1
     daemonize();
 #endif
 
+#if DROP_PRIVILEGES == 1
     drop_privileges();
-
-    fprintf(logfile,"Sizeof metric_group(%lu) metric(%lu) all_metric_groups(%lu)\n",sizeof(metric_group), sizeof(metric), sizeof(metric_group)*METRIC_GROUPS_MAX);
-
-    metric_group metric_groups[METRIC_GROUPS_MAX];
+#endif
 
 
     while(1) {
 
-        if(!(MetricGroupGroupCreate(metric_groups))) {
-            fatal_error("Failed to create metric group collection.");
-        }
+        process_all();
 
-        MetricsCollect(&meminfo_collect, metric_groups);
-        MetricsCollect(&netdev_collect, metric_groups);
-        MetricsCollect(&diskstats_collect, metric_groups);
-        MetricsCollect(&loadavg_collect, metric_groups);
-        MetricsCollect(&cpustat_collect, metric_groups);
-        //MetricsCollect(&micsmc_collect, metric_groups);
-
-        MetricsPrint(&text_printer, metric_groups);
-        //MetricsPrint(&gmetric_printer, metric_groups);
-
+#ifdef MINGMOND_LOG
         fflush(logfile);
+#endif
+
         sleep(COLLECT_PERIOD);
     }
 

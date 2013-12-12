@@ -7,8 +7,8 @@
 
 
 metric_group *MetricsCollect(metric_group
-        *(*collector_func)(metric_group *), metric_group *mg) {
-    return collector_func(MetricGroupNextFree(mg));
+        *(*collector_func)(metric_group *), metric_collection *mc) {
+    return collector_func(MetricGroupNextFree(mc));
 }
 
 metric_group *dummy_collect(metric_group *mg) {

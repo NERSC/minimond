@@ -13,6 +13,41 @@
 #include <grp.h>
 #include "mingmond.h"
 
+void process_all() {
+    void *collectors[] = { 
+        cpustat_collect,
+        diskstats_collect,
+        loadavg_collect,
+        meminfo_collect,
+        micsmc_collect,
+        netdev_collect,
+        NULL };
+
+    void *printers[] = {
+        text_printer,
+        NULL };
+
+    int i = 0;
+    metric_collection mc;
+
+    log_str(LOG_DEBUG,"Sizeof mg(%lu) metric(%lu) all(%lu)\n",
+            sizeof(metric_group), sizeof(metric),
+            sizeof(metric_group)*METRIC_GROUPS_MAX);
+
+    if(!(MetricCollectionCreate(&mc))) {
+        fatal_error("Failed to create metric group collection.");
+    }
+
+    for (i = 0; collectors[i] != NULL ; i++) {
+        MetricsCollect(collectors[i], &mc);
+    }
+
+    for (i = 0; printers[i] != NULL ; i++) {
+        MetricsPrint(printers[i], &mc);
+    }
+}
+
+
 void drop_privileges(void) {
 
     struct passwd const *mingmond_u;
@@ -76,8 +111,11 @@ void daemonize(void) {
     close_fd(STDIN_FILENO);
     close_fd(STDOUT_FILENO);
     close_fd(STDERR_FILENO);
+
+#ifdef MINGMOND_LOG
     close_logfile();
     open_logfile(MINGMOND_LOG);
+#endif
 
 }
 
@@ -104,5 +142,14 @@ void str_nospaces(char *s) {
     for ( ; *s; s++ ) {
         if (*s == ' ') *s = '_';
     }
+}
+
+char *s_strncpy(char *dest, const char *src, size_t n) {
+    char *value;
+
+    value = strncpy(dest, src, n);
+    dest[n-1] = '\0';
+
+    return value;
 }
 

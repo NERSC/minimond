@@ -52,46 +52,7 @@ typedef struct metric_group {
     metric metrics[METRIC_GROUP_MAX_SIZE];
 } metric_group;
 
-
-/*
- * Set up a new group of metric groups.
- * Set all associated metric groups to a "NEW" state.
- */
-metric_group *MetricGroupGroupCreate(metric_group *mg);
-
-/*
- * Set up a new metric group with the given name.  Set all
- * associated metrics to a "NEW" state.
- */
-metric_group *MetricGroupCreate(metric_group *mg, char *name);
-
-/* Create a new metric with the give name and value. */
-metric *MetricCreate(metric *m, char *name, metric_type type,
-        metric_value val);
-
-/* Set the name of metric number count in group mg to name */
-void MetricSetName(metric_group *mg, int count, char *name);
-
-/*
- * Return a pointer to the next metric_group in the array at *mg that
- * is still in a "NEW" state
- */
-metric_group *MetricGroupNextFree(metric_group *mg);
-
-/*
- * "Safe" version on the strncpy function.
- * Explicitly set the final byte to '\0'
- */
-char *s_strncpy(char *dest, const char *src, size_t n);
-
-/*
- * Check if a metric group is still in a "NEW" state
- * Returns 1 if NEW, 0 otherwise
- */
-int metric_group_is_new(metric_group *mg);
-
-/*
- * Check if a metric is still in a "NEW" state
- * Returns 1 if NEW, 0 otherwise
- */
-int metric_is_new(metric *m);
+/* A collection of metric groups. */
+typedef struct mc {
+    metric_group mg[METRIC_GROUPS_MAX];
+} metric_collection;

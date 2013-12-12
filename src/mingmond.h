@@ -1,22 +1,29 @@
-#include "storage.h"
+#ifndef MINGMOND_H
+#define MINGMOND_H
+
 #include "collector.h"
 #include "display.h"
 
-/* Log messages to stdout */
-#define DEBUG_FG 1
 #define DAEMONIZE 0
 
-#define COLLECT_PERIOD 300
+/* Log messages to stdout */
+#define DEBUG_FG 1
+
+/* Drop privileges to MINGMOND_USER */
+#define DROP_PRIVILEGES 1
+
+#define COLLECT_PERIOD 120
 
 #define MAX_LINE 400
 
 #define MINGMOND_USER "larry"
-#define MINGMOND_LOG "/var/log/mingmond.log"
+//#define MINGMOND_LOG "/var/log/mingmond.log"
 
 #define LOG_DEBUG 7
 #define LOG_EMERG 0
 
 extern FILE *logfile;
+
 
 void close_fd(int fd);
 void daemonize(void);
@@ -30,6 +37,15 @@ void file_open(FILE **f, const char *filename, const char *bits);
 
 /* Replace all spaces in s with underscores */
 void str_nospaces(char *s);
+
+/* Process all metrics */
+void process_all(void);
+
+/*
+ * "Safe" version on the strncpy function.
+ * Explicitly set the final byte to '\0'
+ */
+char *s_strncpy(char *dest, const char *src, size_t n);
 
 /*
  * Ganglia metrics:
@@ -77,3 +93,5 @@ void str_nospaces(char *s);
  * pkts_out       Packets out per second (module net_module)
  * swap_free      Amount of available swap memory (module mem_module)
  */
+
+#endif /* MINGMOND_H */

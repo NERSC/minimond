@@ -43,3 +43,4 @@ void close_logfile(void) {
     fclose(logfile);
     log_active = 0;
 }
+

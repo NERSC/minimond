@@ -1,14 +1,17 @@
 /* storage.c */
 
+#ifndef STORAGE_H
+#define STORAGE_H
+
 #include "mingmond.h"
 #include <string.h>
 
-metric_group *MetricGroupGroupCreate(metric_group *mg) {
+metric_collection *MetricCollectionCreate(metric_collection *mc) {
     int c = 0;
     for (c = 0; c < METRIC_GROUPS_MAX; c++ ) {
-        MetricGroupCreate(&mg[c], "NEW");
+        MetricGroupCreate(&(mc->mg[c]), "NEW");
     }
-    return mg;
+    return mc;
 }
 
 metric_group *MetricGroupCreate(metric_group *mg, char *name) {
@@ -40,12 +43,12 @@ int metric_is_new(metric *m) {
     return is_new;
 }
 
-metric_group *MetricGroupNextFree(metric_group *mg) {
+metric_group *MetricGroupNextFree(metric_collection *mc) {
     int c = 0;
     for(c = 0; c < METRIC_GROUPS_MAX; c++) {
-        if(metric_group_is_new(&mg[c])) {
+        if(metric_group_is_new(&(mc->mg[c]))) {
             /* We found a NEW metric_group */
-            return &mg[c];
+            return &(mc->mg[c]);
         }
     }
 
@@ -67,13 +70,4 @@ void MetricSetName(metric_group *mg, int count, char *name) {
     s_strncpy(mg->metrics[count].name, name, NAME_MAX);
 }
 
-char *s_strncpy(char *dest, const char *src, size_t n) {
-    char *value;
-
-    value = strncpy(dest, src, n);
-    dest[n-1] = '\0';
-
-    return value;
-}
-
-
+#endif /* STORAGE_H */

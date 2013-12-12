@@ -40,7 +40,6 @@ metric_group *loadavg_collect_from_file(metric_group *mg, FILE *f) {
      * 0.30 0.32 0.38 2/785 20214
      */
     while (fgets(buf, MAX_LINE, f)) {
-        //count = sscanf(buf,"%f %f %f %f/%f %*s",
         count = sscanf(buf," %f %f %f %f/%f",
                 &fv[0],
                 &fv[1],
@@ -53,7 +52,6 @@ metric_group *loadavg_collect_from_file(metric_group *mg, FILE *f) {
 
         for( count=0 ; labels[count] != NULL; count++, metric_count_incr(&metric_count) ) { 
 
-            printf("mc:%d, count:%d %s %f\n",metric_count, count, labels[count], fv[count]);
             snprintf(name, MAX_LINE, "%s", labels[count] );
             s_strncpy(mg->metrics[metric_count].name, name, NAME_MAX);
             mg->metrics[metric_count].val.f = fv[count];
