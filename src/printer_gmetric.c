@@ -51,18 +51,16 @@ metric_group *gmetric_printer(metric_group *mg) {
 
 
 #ifdef DEBUG
-        fprintf(logfile,"system(%s)\n",buf);
+        log_str(LOG_DEBUG,"system(%s)\n",buf);
 #endif
 
         ret = system(buf);
 
         if(ret < 0) {
-            fprintf(logfile, "system() failed: %d\n", ret);
-            fatal_error("system() failed");
+            fatal_error("system() failed: %d\n", ret);
         }
         else if (ret > 0) {
-            fprintf(logfile, "system() command failed: %d\n", ret);
-            fatal_error("system() command failed");
+            fatal_error("system() command failed: %d\n", ret);
         }
 
     }

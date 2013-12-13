@@ -33,7 +33,6 @@ void fatal_error(char *format_str, ...) {
     exit(-1);
 }
 
-
 void open_logfile(char *filename) {
     file_open(&logfile, filename, "w");
     log_active = 1;

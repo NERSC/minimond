@@ -57,24 +57,20 @@ void drop_privileges(void) {
     mingmond_u = getpwnam(MINGMOND_USER);
 
     if (mingmond_u==NULL) {
-        fprintf(logfile,"getpwnam failed for %s: %s\n",MINGMOND_USER, strerror(errno));
-        fatal_error("Failed to drop privileges");
+        fatal_error("getpwnam failed for %s: %s\n",MINGMOND_USER, strerror(errno));
     }
 
     /* Drop privileges */
     if( setgroups(1, &(mingmond_u->pw_gid)) != 0) {
-      fprintf(logfile, "setgroups() failed: %s", strerror(errno));
-      fatal_error("Failed to drop privileges");
+      fatal_error("setgroups() failed: %s", strerror(errno));
     }
 
     if(setresgid(mingmond_u->pw_gid, mingmond_u->pw_gid, mingmond_u->pw_gid) != 0 ) {
-      fprintf(logfile, "setresgid to %d failed: %s", mingmond_u->pw_gid, strerror(errno));
-      fatal_error("Failed to drop privileges");
+      fatal_error("setresgid to %d failed: %s", mingmond_u->pw_gid, strerror(errno));
     }
 
     if(setresuid(mingmond_u->pw_uid, mingmond_u->pw_uid, mingmond_u->pw_uid) != 0 ) {
-      fprintf(logfile, "setresuid to %d failed: %s", mingmond_u->pw_uid, strerror(errno));
-      fatal_error("Failed to drop privileges");
+      fatal_error("setresuid to %d failed: %s", mingmond_u->pw_uid, strerror(errno));
     }
 }
 
@@ -87,8 +83,7 @@ void daemonize(void) {
 
     if (child_pid < 0) {
         /* Fork failed */
-        fprintf(logfile, "fork() failed: %s\n",strerror(errno));
-        fatal_error("Failed to fork()");
+        fatal_error("fork() failed: %s\n",strerror(errno));
     }
     else if (child_pid > 0) {
         /* Parent process */
@@ -99,12 +94,12 @@ void daemonize(void) {
     umask(0);
     session_id = setsid();
     if (session_id < 0) {
-        fatal_error("Failed to setsid()");
+        fatal_error("Failed to setsid(): %s\n",strerror(errno));
     }
 
     
     if ((chdir("/")) < 0) {
-        fatal_error("Failed to chdir()");
+        fatal_error("Failed to chdir(): %s\n",strerror(errno));
     }
 
     
@@ -124,8 +119,7 @@ void close_fd(int fd) {
   ret = close(fd);
 
   if(ret != 0) {
-    fprintf(logfile,"close() failed: %s\n",strerror(errno));
-    fatal_error("Failed to close()");
+    fatal_error("close() failed: %s\n",strerror(errno));
   }
 }
 
@@ -133,7 +127,7 @@ void file_open(FILE **f, const char *filename, const char *bits) {
     *f = fopen(filename, bits);
 
     if(*f == NULL) {
-        fatal_error("Could not open %s: %s\n",
+        log_str(LOG_EMERG,"Could not open %s: %s\n",
                 filename,strerror(errno));
     }
 }

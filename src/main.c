@@ -19,7 +19,6 @@ int main (int argc, char **argv) {
     drop_privileges();
 #endif
 
-
     while(1) {
 
         process_all();
@@ -31,8 +30,9 @@ int main (int argc, char **argv) {
         sleep(COLLECT_PERIOD);
     }
 
-    fclose(logfile);
+#ifdef MINGMOND_LOG
     close_logfile();
+#endif
 
     return EXIT_SUCCESS;
 }

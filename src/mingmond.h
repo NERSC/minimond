@@ -7,7 +7,7 @@
 #define DAEMONIZE 0
 
 /* Log messages to stdout */
-#define DEBUG_FG 1
+#define DEBUG_FG 0
 
 /* Drop privileges to MINGMOND_USER */
 #define DROP_PRIVILEGES 1
