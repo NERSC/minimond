@@ -4,3 +4,4 @@ libmingmond_la_SOURCES = logging.c util.c storage.c display.c storage.h mingmond
 bin_PROGRAMS = mingmond
 mingmond_SOURCES = main.c
 mingmond_LDADD = libmingmond.la
+mingmond_CFLAGS = -static

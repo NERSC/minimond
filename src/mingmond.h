@@ -4,7 +4,7 @@
 #include "collector.h"
 #include "display.h"
 
-#define DAEMONIZE 0
+#define DAEMONIZE 1
 
 /* Log messages to stdout */
 #define DEBUG_FG 0
@@ -16,8 +16,8 @@
 
 #define MAX_LINE 400
 
-#define MINGMOND_USER "larry"
-//#define MINGMOND_LOG "/var/log/mingmond.log"
+#define MINGMOND_USER "ganglia"
+#define MINGMOND_LOG "/var/log/mingmond.log"
 
 #define LOG_DEBUG 7
 #define LOG_EMERG 0
