@@ -24,7 +24,8 @@ void process_all() {
         NULL };
 
     void *printers[] = {
-        text_printer,
+        gmetric_printer,
+        /* text_printer, */
         NULL };
 
     int i = 0;
