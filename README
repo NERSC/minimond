@@ -1,0 +1,33 @@
+mingmond is a "minimalist" approach to metrics collection, designed to
+collect large numbers of metrics with minimal performance impact to
+the system on which it runs.  Any calculation of derived statistics is
+intended to be performed on a remote collection/analysis server.
+
+
+The code currently does the following:
+   1) Runs several input modules that collect information from a
+      few files in /proc/ and stores them in memory
+   2) Runs one or more output modules to display the metrics or
+      send them elsewhere
+
+
+Currently, the only output modules are "text" (which prints the
+output to a logfile) and "gmetric" (which uses the "gmetric"
+utility to send the data to Ganglia).  Additional output modules
+for EmbeddedGmetric and AMQP could probably be written fairly
+quickly.
+
+
+For the prototype, I chose ease of implementation as the
+standard for appropriate design decisions, so the code has the
+following known issues/limitations:
+
+   * Some memory is wasted due to statically sized data
+     structures and buffers that may be larger than needed.
+
+   * There is currently no support for calculating a change in
+     metric values (e.g., bits per second).
+
+   * There is no documentation.
+
+   * Some overall cleanup is needed.
