@@ -12,7 +12,8 @@ int log_active = 0;
 void vlog(int log_level, char *format_str, va_list args) {
     char buf[MAX_LINE];
     vsnprintf(buf, MAX_LINE, format_str, args);
-    if(log_active) fputs(buf, logfile);
+    if(log_active == 1) fputs(buf, logfile);
+    else if (log_active < 0) fputs(buf, stderr);
 #if DEBUG_FG == 1
     fputs(buf, stderr);
 #endif
@@ -34,6 +35,7 @@ void fatal_error(char *format_str, ...) {
 }
 
 void open_logfile(char *filename) {
+    log_active = -1;
     file_open(&logfile, filename, "w");
     log_active = 1;
 }

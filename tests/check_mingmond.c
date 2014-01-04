@@ -157,13 +157,22 @@ START_TEST (test_micsmc_collect) {
 }
 END_TEST
 
+/* Test that we can build a default configuration. */
+START_TEST (test_cfg_build) {
+    config cfg;
+    parse_args(0, NULL, &cfg);
+}
+END_TEST
+
 /*
  * Test that running all collector/printer combos at once completes
  * normally
  */
 START_TEST (test_process_all) {
+    config cfg;
+    parse_args(0, NULL, &cfg);
     open_logfile(PROCESS_ALL_TEST_LOG);
-    process_all();
+    process_all(&cfg);
     close_logfile();
 }
 END_TEST
@@ -174,6 +183,7 @@ Suite *mingmond_suite (void) {
 
   TCase *tc_main = tcase_create ("main");
 
+  tcase_add_test (tc_main, test_cfg_build);
   tcase_add_test (tc_main, test_MetricGroupGroupCreate);
   tcase_add_test (tc_main, test_dummy_collect);
   tcase_add_test (tc_main, test_cpustat_collect);

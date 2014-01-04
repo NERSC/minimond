@@ -4,48 +4,82 @@
 #include "collector.h"
 #include "display.h"
 
+/* Support daemonizing */
+#define SUPPORT_DAEMONIZE 1
+/* Daemonize by default */
 #define DAEMONIZE 1
 
-/* Log messages to stdout */
-#define DEBUG_FG 0
-
-/* Drop privileges to MINGMOND_USER */
+/* Support dropping privileges to MINGMOND_USER */
+#define SUPPORT_DROP_PRIVILEGES 1
+/* Drop privileges by default */
 #define DROP_PRIVILEGES 1
-
-#define COLLECT_PERIOD 120
-
-#define MAX_LINE 400
-
+/* Default privilege drop user */
 #define MINGMOND_USER "ganglia"
+
+/* Support logging to a file. */
+#define SUPPORT_LOGFILE 1
+/* Default logfile */
 #define MINGMOND_LOG "/var/log/mingmond.log"
 
+/* Log messages to stdout by default */
+#define DEBUG_FG 0
+
+/* How often, in seconds, that metrics should be collected. */
+#define COLLECT_PERIOD 120
+
+/*
+ * The maximum length of a stored string, including the
+ * trailing null byte. 
+ */
+#define MAX_LINE 400
+
+/* Definitions of debug levels. */
 #define LOG_DEBUG 7
 #define LOG_EMERG 0
 
 extern FILE *logfile;
 
+/* Configuration settings */
+typedef struct config {
+    char user[MAX_LINE];
+    char logfile[MAX_LINE];
+    char pidfile[MAX_LINE];
+    int drop_privileges;
+    int debug_fg;
+    int daemonize;
+    void **collectors;
+    void **printers;
+} config;
 
+extern void *default_collectors[];
+extern void *default_printers[];
+
+
+config *ConfigDefaultCreate(config *c);
 void close_fd(int fd);
 void daemonize(void);
-void drop_privileges(void);
+void drop_privileges(char *user);
 void fatal_error(char *format_str, ...);
 void vlog(int log_level, char *format_str, va_list args);
 void log_str(int log_level, char *format_str, ...);
 void open_logfile(char *filename);
 void close_logfile(void);
 void file_open(FILE **f, const char *filename, const char *bits);
+void parse_args(int argc, char **argv, config *c);
 
 /* Replace all spaces in s with underscores */
 void str_nospaces(char *s);
 
 /* Process all metrics */
-void process_all(void);
+void process_all(config *c);
 
 /*
  * "Safe" version on the strncpy function.
  * Explicitly set the final byte to '\0'
  */
 char *s_strncpy(char *dest, const char *src, size_t n);
+
+
 
 /*
  * Ganglia metrics:

@@ -13,20 +13,23 @@
 #include <grp.h>
 #include "mingmond.h"
 
-void process_all() {
-    void *collectors[] = { 
-        cpustat_collect,
-        diskstats_collect,
-        loadavg_collect,
-        meminfo_collect,
-        micsmc_collect,
-        netdev_collect,
-        NULL };
+/* The default set of collector modules. */
+void *default_collectors[] = { 
+    cpustat_collect,
+    diskstats_collect,
+    loadavg_collect,
+    meminfo_collect,
+    micsmc_collect,
+    netdev_collect,
+    NULL };
 
-    void *printers[] = {
-        gmetric_printer,
-        /* text_printer, */
-        NULL };
+/* The default set of printer modules. */
+void *default_printers[] = {
+    /* gmetric_printer, */
+    text_printer,
+    NULL };
+
+void process_all(config *c) {
 
     int i = 0;
     metric_collection mc;
@@ -39,26 +42,26 @@ void process_all() {
         fatal_error("Failed to create metric group collection.");
     }
 
-    for (i = 0; collectors[i] != NULL ; i++) {
-        MetricsCollect(collectors[i], &mc);
+    for (i = 0; c->collectors[i] != NULL ; i++) {
+        MetricsCollect(c->collectors[i], &mc);
     }
 
-    for (i = 0; printers[i] != NULL ; i++) {
-        MetricsPrint(printers[i], &mc);
+    for (i = 0; c->printers[i] != NULL ; i++) {
+        MetricsPrint(c->printers[i], &mc);
     }
 }
 
 
-void drop_privileges(void) {
+void drop_privileges(char *user) {
 
     struct passwd const *mingmond_u;
 
     /* Retrieve the passwd structure for the unprivileged user. */
     errno = 0;
-    mingmond_u = getpwnam(MINGMOND_USER);
+    mingmond_u = getpwnam(user);
 
     if (mingmond_u==NULL) {
-        fatal_error("getpwnam failed for %s: %s\n",MINGMOND_USER, strerror(errno));
+        fatal_error("getpwnam failed for %s: %s\n", user, strerror(errno));
     }
 
     /* Drop privileges */
@@ -128,7 +131,7 @@ void file_open(FILE **f, const char *filename, const char *bits) {
     *f = fopen(filename, bits);
 
     if(*f == NULL) {
-        log_str(LOG_EMERG,"Could not open %s: %s\n",
+        fatal_error("Could not open %s: %s\n",
                 filename,strerror(errno));
     }
 }

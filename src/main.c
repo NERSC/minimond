@@ -3,34 +3,41 @@
 #include <stdlib.h>
 #include "mingmond.h"
 
-extern FILE *logfile;
 
 int main (int argc, char **argv) {
 
-#ifdef MINGMOND_LOG
-    open_logfile(MINGMOND_LOG);
-#endif
+    config cfg;
 
-#if DAEMONIZE == 1
-    daemonize();
-#endif
+    parse_args(argc, argv, &cfg);
+
+#if SUPPORT_LOGFILE == 1
+    open_logfile(cfg.logfile);
+#endif /* SUPPORT_LOGFILE */
+
+#if SUPPORT_DAEMONIZE == 1
+    if (cfg.daemonize) {
+        daemonize();
+    }
+#endif /* SUPPORT_DAEMONIZE */
 
 #if DROP_PRIVILEGES == 1
-    drop_privileges();
+    if (cfg.drop_privileges) {
+        drop_privileges(cfg.user);
+    }
 #endif
 
     while(1) {
 
-        process_all();
+        process_all(&cfg);
 
-#ifdef MINGMOND_LOG
+#if SUPPORT_LOGFILE == 1
         fflush(logfile);
-#endif
+#endif /* SUPPORT_LOGFILE */
 
         sleep(COLLECT_PERIOD);
     }
 
-#ifdef MINGMOND_LOG
+#ifdef SUPPORT_LOGFILE
     close_logfile();
 #endif
 
