@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "../src/mingmond.h"
 
+#define PIDFILE_TEST "pidfile_test_output.txt"
+
 #define MEMINFO_TEST "meminfo_test_input.txt"
 #define MEMINFO_TEST_LOG "meminfo_test_log.txt"
 #define MEMINFO_TEST_OUTPUT "meminfo_test_output.txt"
@@ -165,6 +167,38 @@ START_TEST (test_cfg_build) {
 END_TEST
 
 /*
+ * Test that we can use a pidfile argument. Pass a pidfile argument
+ * to parse_args, and then call write_pidfile.  Then, open the
+ * provided pidfile and verify that the PID written is correct. 
+ */
+START_TEST (test_cfg_pidfile) {
+    config cfg;
+    char *argp[3];
+
+    FILE *f;
+    char buf[MAX_LINE];
+    int pid;
+
+    //char args[][MAX_LINE] = { "test", "-p", PIDFILE_TEST };
+    //char **argp = (char **)args;
+    argp[0] = strdup("test");
+    argp[1] = strdup("-p");
+    argp[2] = strdup(PIDFILE_TEST);
+    parse_args(3, argp, &cfg);
+    ck_assert_str_eq(cfg.pidfile, PIDFILE_TEST);
+    write_pidfile(cfg.pidfile);
+
+
+    file_open(&f, cfg.pidfile, "r");
+    fgets(buf, MAX_LINE, f);
+    file_close(f);
+
+    sscanf(buf, "%d", &pid);
+    ck_assert_int_eq(pid, getpid());
+}
+END_TEST
+
+/*
  * Test that running all collector/printer combos at once completes
  * normally
  */
@@ -184,6 +218,7 @@ Suite *mingmond_suite (void) {
   TCase *tc_main = tcase_create ("main");
 
   tcase_add_test (tc_main, test_cfg_build);
+  tcase_add_test (tc_main, test_cfg_pidfile);
   tcase_add_test (tc_main, test_MetricGroupGroupCreate);
   tcase_add_test (tc_main, test_dummy_collect);
   tcase_add_test (tc_main, test_cpustat_collect);

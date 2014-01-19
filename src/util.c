@@ -79,7 +79,7 @@ void drop_privileges(char *user) {
 }
 
 
-void daemonize(void) {
+void daemonize(config *c) {
     pid_t child_pid;
     pid_t session_id;
 
@@ -91,7 +91,7 @@ void daemonize(void) {
     }
     else if (child_pid > 0) {
         /* Parent process */
-        exit(0);
+        exit(EXIT_SUCCESS);
     }
 
     /* Child process */
@@ -113,7 +113,7 @@ void daemonize(void) {
 
 #ifdef MINGMOND_LOG
     close_logfile();
-    open_logfile(MINGMOND_LOG);
+    open_logfile(c->logfile);
 #endif
 
 }
@@ -136,6 +136,15 @@ void file_open(FILE **f, const char *filename, const char *bits) {
     }
 }
 
+void file_close(FILE *f) {
+
+    if(fclose(f) != 0) {
+        fatal_error("Could not close %s: %s\n",
+                "file",strerror(errno));
+    }
+
+}
+
 void str_nospaces(char *s) {
     for ( ; *s; s++ ) {
         if (*s == ' ') *s = '_';
@@ -149,5 +158,21 @@ char *s_strncpy(char *dest, const char *src, size_t n) {
     dest[n-1] = '\0';
 
     return value;
+}
+
+void usage(char *progname) {
+    printf("%s [-p pidfile] [-v]\n",progname);
+}
+
+void usage_and_fail(char *progname) {
+    usage(progname);
+    fatal_error("Invalid usage");
+}
+
+void write_pidfile(char *filename) {
+    FILE *f;
+    file_open(&f, filename, "w");
+    fprintf(f, "%ld\n", (long)getpid());
+    file_close(f);
 }
 

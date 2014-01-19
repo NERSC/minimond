@@ -54,13 +54,9 @@ void metric_file_pclose(FILE *metric_file) {
 }
 
 void metric_file_close(FILE *metric_file) {
-
-    if(fclose(metric_file) != 0) {
-        fatal_error("Could not close %s: %s\n",
-                "metric file",strerror(errno));
-    }
-
+    file_close(metric_file);
 }
+
 void metric_count_incr(int *metric_count) {
     if (*metric_count == METRIC_GROUP_MAX_SIZE) {
         fatal_error("Metric group max size (%d) exceeded",

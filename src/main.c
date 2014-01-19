@@ -16,9 +16,13 @@ int main (int argc, char **argv) {
 
 #if SUPPORT_DAEMONIZE == 1
     if (cfg.daemonize) {
-        daemonize();
+        daemonize(&cfg);
     }
 #endif /* SUPPORT_DAEMONIZE */
+
+    if(cfg.pidfile[0]) {
+        write_pidfile(cfg.pidfile);
+    }
 
 #if DROP_PRIVILEGES == 1
     if (cfg.drop_privileges) {
@@ -41,6 +45,6 @@ int main (int argc, char **argv) {
     close_logfile();
 #endif
 
-    return EXIT_SUCCESS;
+    return(EXIT_SUCCESS);
 }
 

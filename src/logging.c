@@ -31,7 +31,7 @@ void fatal_error(char *format_str, ...) {
     va_start(args, format_str);
     vlog(LOG_EMERG, format_str, args);
     va_end(args);
-    exit(-1);
+    exit(EXIT_FAILURE);
 }
 
 void open_logfile(char *filename) {
