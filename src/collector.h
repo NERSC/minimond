@@ -9,7 +9,7 @@
 
 /* Collect metrics for metric_collection mc using collector_func */
 metric_group *MetricsCollect(MetricHandler *collector_func,
-        metric_collection *mc);
+        metric_collection *mc, config *c);
 
 /* A very simple collection function for test purposes */
 metric_group *dummy_collect(metric_group *mg);

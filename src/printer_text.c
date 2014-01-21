@@ -3,13 +3,13 @@
 #include <stdio.h>
 #include "mingmond.h"
 
-metric_group *text_printer(metric_group *mg) {
-    int c = 0;
+metric_group *text_printer(metric_group *mg, config *c) {
+    int i = 0;
     metric m;
 
-    for (c = 0; c < METRIC_GROUP_MAX_SIZE ; c++) {
+    for (i = 0; i < METRIC_GROUP_MAX_SIZE ; i++) {
 
-        m = mg->metrics[c];
+        m = mg->metrics[i];
 
         if(metric_is_new(&m)) {
             break;

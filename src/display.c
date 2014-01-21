@@ -3,11 +3,13 @@
 #include "mingmond.h"
 #include <stdio.h>
 
-metric_collection *MetricsPrint(metric_group *(*print_func)(metric_group *), metric_collection *mc) {
-    int c = 0;
-    for (c = 0; c < METRIC_GROUPS_MAX; c++) {
-        if(!(metric_group_is_new(&(mc->mg[c])))) {
-            print_func(&(mc->mg[c]));
+metric_collection *MetricsPrint(
+        metric_group *(*print_func)(metric_group *, config *c),
+        metric_collection *mc, config *c) {
+    int i = 0;
+    for (i = 0; i < METRIC_GROUPS_MAX; i++) {
+        if(!(metric_group_is_new(&(mc->mg[i])))) {
+            print_func(&(mc->mg[i]), c);
         }
     }
 

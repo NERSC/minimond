@@ -105,6 +105,8 @@ void metric_collection_do(
         char *in, char *log) {
     open_logfile(log);
     FILE *mf = NULL;
+    config c;
+    ConfigDefaultCreate(&c);
     metric_collection mc;
     MetricCollectionCreate(&mc);
     ck_assert_str_eq(mc.mg[0].name, "NEW");
@@ -113,7 +115,7 @@ void metric_collection_do(
 
     collector_func(&(mc.mg[0]), mf);
     metric_file_close(mf);
-    MetricsPrint(&text_printer, &mc);
+    MetricsPrint(&text_printer, &mc, &c);
     close_logfile();
 }
 

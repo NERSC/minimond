@@ -10,16 +10,16 @@
 #define GMETRIC_COMMAND_SIZE 1024
 #define GMETRIC_VALUE_SIZE 128
 
-metric_group *gmetric_printer(metric_group *mg) {
+metric_group *gmetric_printer(metric_group *mg, config *c) {
     char buf[GMETRIC_COMMAND_SIZE];
     char type_buf[GMETRIC_VALUE_SIZE];
-    int c = 0;
+    int i = 0;
     int ret = 0;
     metric m;
 
-    for (c = 0; c < METRIC_GROUP_MAX_SIZE ; c++) {
+    for (i = 0; i < METRIC_GROUP_MAX_SIZE ; i++) {
 
-        m = mg->metrics[c];
+        m = mg->metrics[i];
 
         if(metric_is_new(&m)) {
             break;

@@ -8,6 +8,7 @@
 #ifndef STORAGE_MODEL_H
 #define STORAGE_MODEL_H
 
+#include "config-model.h"
 #include "storage.h"
 
 /*
@@ -51,6 +52,6 @@ int metric_is_new(metric *m);
  * A function which takes a metric_group* as input and returns a
  * metric_group*
  */
-typedef metric_group *(MetricHandler)(metric_group *);
+typedef metric_group *(MetricHandler)(metric_group *, config *);
 
 #endif /* STORAGE_MODEL_H */

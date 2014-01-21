@@ -43,11 +43,11 @@ void process_all(config *c) {
     }
 
     for (i = 0; c->collectors[i] != NULL ; i++) {
-        MetricsCollect(c->collectors[i], &mc);
+        MetricsCollect(c->collectors[i], &mc, c);
     }
 
     for (i = 0; c->printers[i] != NULL ; i++) {
-        MetricsPrint(c->printers[i], &mc);
+        MetricsPrint(c->printers[i], &mc, c);
     }
 }
 
