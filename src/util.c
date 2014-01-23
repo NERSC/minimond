@@ -25,8 +25,8 @@ void *default_collectors[] = {
 
 /* The default set of printer modules. */
 void *default_printers[] = {
-    /* gmetric_printer, */
-    text_printer,
+    gmetric_printer,
+    /* text_printer, */
     NULL };
 
 void process_all(config *c) {
