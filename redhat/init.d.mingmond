@@ -36,7 +36,7 @@ RETVAL=0
 
 start() {
     echo -n "Starting ${prog}: "
-    daemon --pidfile "${PIDFILE}" "${mingmond}" --pid "${PIDFILE}"
+    daemon --pidfile "${PIDFILE}" "${mingmond}" -p "${PIDFILE}"
     RETVAL=$?
     chmod 600 "${PIDFILE}"
     echo
