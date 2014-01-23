@@ -1,0 +1,39 @@
+Installation Instructions
+=========================
+
+
+
+Normal Installation
+===================
+
+Under most circumstances, the following steps should be sufficient for building
+and installing mingmond into /usr/:
+
+    ./autogen.sh
+    ./configure --prefix=/usr
+    make
+    make install
+
+Additionally, redhat/init.d.mingmond is provided for RedHat-like systems that
+support SysVinit initscripts.  It can be installed with:
+
+    install -o root -g root -m 755 redhat/init.d.mingmond /etc/rc.d/init.d/mingmond
+
+
+
+
+Running the Test Suite
+======================
+
+mingmond includes a set of self-tests that use the check[1] testing framework.
+If the development files for check are available, the test suite can be run as
+follows:
+
+    ./autogen.sh
+    ./configure --enable-check
+    make
+    make check
+
+
+
+[1] http://check.sf.net
