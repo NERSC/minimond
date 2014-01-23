@@ -1,8 +1,8 @@
 #!/bin/sh
 #
-# /etc/rc.d/init.d/procmon
+# /etc/rc.d/init.d/mingmond
 #
-# Process Monitor
+# Metrics Collection and Handling daemon
 #        
 # chkconfig: 2345 99 1
 # description: Mingmond
@@ -10,7 +10,7 @@
 # pidfile: /var/run/mingmond.pid
 
 ### BEGIN INIT INFO
-# Provides: procmon
+# Provides: mingmond
 # Required-Start: $local_fs
 # Required-Stop: $local_fs
 # Should-Start: $network
