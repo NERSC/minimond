@@ -111,7 +111,7 @@ void daemonize(config *c) {
     close_fd(STDOUT_FILENO);
     close_fd(STDERR_FILENO);
 
-#ifdef MINGMOND_LOG
+#ifdef LOGFILE
     close_logfile();
     open_logfile(c->logfile);
 #endif

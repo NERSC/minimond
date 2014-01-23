@@ -6,8 +6,8 @@
 config cfg;
 
 config *ConfigDefaultCreate(config *c) {
-    s_strncpy(c->user, MINGMOND_USER, NAME_MAX-1);
-    s_strncpy(c->logfile, MINGMOND_LOG, NAME_MAX-1);
+    s_strncpy(c->user, TARGET_USER, NAME_MAX-1);
+    s_strncpy(c->logfile, LOGFILE, NAME_MAX-1);
 
     c->pidfile[0] = '\0';
 

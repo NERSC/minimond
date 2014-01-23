@@ -4,20 +4,14 @@
 
 /* Support daemonizing */
 #define SUPPORT_DAEMONIZE 1
-/* Daemonize by default */
-#define DAEMONIZE 1
 
-/* Support dropping privileges to MINGMOND_USER */
+/* Support dropping privileges to TARGET_USER */
 #define SUPPORT_DROP_PRIVILEGES 1
 /* Drop privileges by default */
 #define DROP_PRIVILEGES 1
-/* Default privilege drop user */
-#define MINGMOND_USER "ganglia"
 
 /* Support logging to a file. */
 #define SUPPORT_LOGFILE 1
-/* Default logfile */
-#define MINGMOND_LOG "/var/log/mingmond.log"
 
 /* Log messages to stdout by default */
 #define DEBUG_FG 0

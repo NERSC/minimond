@@ -206,7 +206,14 @@ END_TEST
  */
 START_TEST (test_process_all) {
     config cfg;
+
+    void *text_printers[] = {
+        text_printer,
+        NULL };
+
     parse_args(0, NULL, &cfg);
+    cfg.printers = text_printers;
+
     open_logfile(PROCESS_ALL_TEST_LOG);
     process_all(&cfg);
     close_logfile();

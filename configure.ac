@@ -22,8 +22,7 @@ AM_PROG_CC_C_O
 AC_ARG_ENABLE([check],
               [AS_HELP_STRING([--enable-check],
               [enable tests with check @<:@default=no@:>@])],
-              [], [enable_check=check])
-
+              [], [enable_check=no])
 
 if test "$enable_check" = "yes"; then
     AC_DEFINE([ENABLE_CHECK], [], [Support check testing framework])
@@ -32,6 +31,48 @@ if test "$enable_check" = "yes"; then
 fi
 AM_CONDITIONAL([SUPPORT_CHECK], [test "$enable_check" = "yes"])
 
+AC_ARG_WITH([logfile],
+              [AS_HELP_STRING([--with-logfile],
+              [Logfile location @<:@default=DATADIR/log/mingmond.log@:>@])],
+              [], [with_logfile=/var/log/mingmond.log])
+
+AC_DEFINE_UNQUOTED([LOGFILE], ["$with_logfile"], [Logfile location])
+
+AC_ARG_WITH([target_user],
+              [AS_HELP_STRING([--with-target_user],
+              [Target target_user @<:@default=ganglia@:>@])],
+              [], [with_target_user=ganglia])
+
+AC_DEFINE_UNQUOTED([TARGET_USER], ["$with_target_user"], [Default privilege drop user])
+
+AC_ARG_WITH([daemonize_default],
+              [AS_HELP_STRING([--with-daemonize_default],
+              [Target daemonize_default @<:@default=yes@:>@])],
+              [], [with_daemonize_default=yes])
+
+case $with_daemonize_default in
+    yes)
+        with_daemonize_default=1 ;;
+    *)
+        with_daemonize_default=0 ;;
+esac
+
+AC_DEFINE_UNQUOTED([DAEMONIZE],  [$with_daemonize_default], [Daemonize by default])
+
 AM_CONFIG_HEADER(config.h)
 
 AC_OUTPUT(Makefile src/Makefile)
+
+AC_MSG_RESULT([
+
+*********************************************
+* PROJECT_NAME $VERSION configuration:
+*********************************************
+*   Enable tests.........................$enable_check
+*   Log file location....................$with_logfile
+*   Target user..........................$with_target_user
+*   Daemonize by default.................$with_daemonize_default
+*********************************************
+
+
+])
