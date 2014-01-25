@@ -87,7 +87,7 @@ AC_MSG_RESULT([
 ])
 
 if test "$with_gmetric" = "yes"; then
-    dnl AC_DEFINE([GMETRIC], [], [Support Gmetric])
+    AC_DEFINE([GMETRIC_DEFAULT], [], [Enable Gmetric by default])
     if test "$with_embeddedgmetric" = "yes"; then
         echo "Warning: Building with both Gmetric and EmbeddedGmetric is not recommended"
     fi

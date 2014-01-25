@@ -15,7 +15,8 @@ int main (int argc, char **argv) {
 #endif /* SUPPORT_LOGFILE */
 
 #if SUPPORT_DAEMONIZE == 1
-    if (cfg.daemonize) {
+    if (cfg.daemonize == 1) {
+        log_str(LOG_DEBUG,"Daemonizing");
         daemonize(&cfg);
     }
 #endif /* SUPPORT_DAEMONIZE */

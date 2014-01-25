@@ -1,6 +1,5 @@
 /* printer_embeddedgmetric.c */
 
-#ifdef EMBEDDEDGMETRIC
 
 #include <errno.h>
 #include <unistd.h>
@@ -8,15 +7,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include "mingmond.h"
+
+
+#ifdef EMBEDDEDGMETRIC
 #include "embeddedgmetric.h"
 
-#define EMBG_COMMAND_SIZE 1024
-#define EMBG_VALUE_SIZE 128
 
 metric_group *embeddedgmetric_printer(metric_group *mg, config *c) {
-    char buf[EMBG_COMMAND_SIZE];
-    int c = 0;
-    int ret = 0;
+    int i = 0;
     metric m;
 
     gmetric_t g;
@@ -29,9 +27,9 @@ metric_group *embeddedgmetric_printer(metric_group *mg, config *c) {
         return mg;
     }
 
-    for (c = 0; c < METRIC_GROUP_MAX_SIZE ; c++) {
+    for (i = 0; i < METRIC_GROUP_MAX_SIZE ; i++) {
 
-        m = mg->metrics[c];
+        m = mg->metrics[i];
 
         if(metric_is_new(&m)) {
             break;
@@ -47,7 +45,7 @@ metric_group *embeddedgmetric_printer(metric_group *mg, config *c) {
                 g_msg.value.v_int = m.val.i;
                 break;
             case VALUE_LONG:
-                g_msg.type = GMETRIC_VALUE_LONG;
+                g_msg.type = GMETRIC_VALUE_INT;
                 g_msg.value.v_int = m.val.l;
                 break;
             case VALUE_FLOAT:
@@ -62,7 +60,7 @@ metric_group *embeddedgmetric_printer(metric_group *mg, config *c) {
         g_msg.slope = GMETRIC_SLOPE_BOTH;
 
         g_msg.tmax = COLLECT_PERIOD*3;
-        g.msg.dmax = 0;
+        g_msg.dmax = 0;
 
         if(gmetric_send(&g, &g_msg) == -1) {
             log_str(LOG_DEBUG,"Failed to send on EmbeddedGmetric connection: %s.  Metrics will not be sent during this collection period\n", strerror(errno));

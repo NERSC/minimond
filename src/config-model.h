@@ -15,10 +15,10 @@ typedef struct config {
     void **collectors;
     void **printers;
 
-# ifdef CONFIG_EMBEDDEDGMETRIC
+# ifdef EMBEDDEDGMETRIC
     char embg_host[MAX_LINE];
     int embg_port;
-# endif /* CONFIG_EMBEDDEDGMETRIC */
+# endif /* EMBEDDEDGMETRIC */
 } config;
 
 #endif /* CONFIG_MODEL_H */
