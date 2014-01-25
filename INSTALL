@@ -30,7 +30,7 @@ If the development files for check are available, the test suite can be run as
 follows:
 
     ./autogen.sh
-    ./configure --enable-check
+    ./configure --with-check
     make
     make check
 
