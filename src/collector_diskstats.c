@@ -37,7 +37,7 @@ metric_group *diskstats_collect_from_file(metric_group *mg, FILE *f) {
     const char *labels[] = { "readIO", "readMerge", "readSectors",
                              "readTicks", "writeIO", "writeMerge",
                              "writeSectors", "writeTicks", "inFlight",
-                             "ioTicks", "inQueue"
+                             "ioTicks", "inQueue", NULL
                            };
 
     mg->type = VALUE_LONG;
