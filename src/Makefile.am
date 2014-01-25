@@ -5,6 +5,7 @@ libmingmond_la_SOURCES += printer_gmetric.c
 endif
 if SUPPORT_EMBEDDEDGMETRIC
 libmingmond_la_SOURCES += printer_embeddedgmetric.c
+libmingmond_la_LIBADD = $(EMBEDDEDGMETRIC_LIBS)
 endif
 
 sbin_PROGRAMS = mingmond

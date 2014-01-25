@@ -17,7 +17,7 @@ m4_include(m4/mg.m4)
 AC_LANG(C)
 AC_PROG_CC
 AC_PROG_LIBTOOL
-CFLAGS="-Wall -Werror"
+CFLAGS="${CFLAGS} -Wall -Werror"
 AC_SUBST(CFLAGS)
 
 AM_INIT_AUTOMAKE
@@ -32,23 +32,31 @@ MG_WITH([embeddedgmetric], [no], [EmbeddedGmetric support])
 MG_WITH([gmetric], [yes], [Gmetric support])
 
 if test "$with_check" = "yes"; then
-    AC_DEFINE([CHECK], [], [Support check testing framework])
+    dnl AC_DEFINE([CHECK], [], [Support check testing framework])
     PKG_CHECK_MODULES([check], [check >= 0.9.4])
     AC_CONFIG_FILES(tests/Makefile)
 fi
 
 if test "$with_embeddedgmetric" = "yes"; then
-    AC_DEFINE([EMBEDDEDGMETRIC], [], [Support EmbeddedGmetric])
-    PKG_CHECK_MODULES([embeddedgmetric], [embeddedgmetric >= 1.3.0])
+    dnl AC_DEFINE([DEMBEDDEDGMETRIC], [], [Support EmbeddedGmetric])
+
+    AC_CHECK_HEADER([embeddedgmetric.h], [],
+                 AC_MSG_FAILURE([Couldn't find embeddedgmetric.h]), [])
+
+    AC_CHECK_LIB([embeddedgmetric], [gmetric_create],
+                 EMBEDDEDGMETRIC_LIBS="-lembeddedgmetric",
+                 AC_MSG_FAILURE([Couldn't find -lembeddedgmetric]))
+
+    AC_CHECK_LIB([embeddedgmetric], [gmetric31_message_create_xdr],
+                 [],
+                 AC_MSG_FAILURE([This version of EmbeddedGmetric does
+                                 not appear to support the new Ganglia
+                                 wire protocol]))
+
+    AC_SUBST(EMBEDDEDGMETRIC_LIBS)
 fi
 
 
-if test "$with_gmetric" = "yes"; then
-    AC_DEFINE([GMETRIC], [], [Support Gmetric])
-    if test "$with_embeddedgmetric" = "yes"; then
-        echo "Building with both Gmetric and EmbeddedGmetric is not recommended"
-    fi
-fi
 
 AM_CONDITIONAL([SUPPORT_CHECK], [test "$with_check" = "yes"])
 AM_CONDITIONAL([SUPPORT_EMBEDDEDGMETRIC], [test "$with_embeddedgmetric" = "yes"])
@@ -76,5 +84,11 @@ AC_MSG_RESULT([
 *   Gmetric support......................$with_gmetric
 ***********************************************************************
 
-
 ])
+
+if test "$with_gmetric" = "yes"; then
+    dnl AC_DEFINE([GMETRIC], [], [Support Gmetric])
+    if test "$with_embeddedgmetric" = "yes"; then
+        echo "Warning: Building with both Gmetric and EmbeddedGmetric is not recommended"
+    fi
+fi
