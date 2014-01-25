@@ -1,4 +1,6 @@
-/* textprinter.c */
+/* printer_gmetric.c */
+
+#ifdef GMETRIC
 
 #include <errno.h>
 #include <unistd.h>
@@ -69,3 +71,5 @@ metric_group *gmetric_printer(metric_group *mg, config *c) {
 
     return mg;
 }
+
+#endif /* GMETRIC */

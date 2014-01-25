@@ -11,7 +11,12 @@ config *ConfigDefaultCreate(config *c) {
 
     c->pidfile[0] = '\0';
 
-    c->daemonize = DAEMONIZE;
+#ifdef DAEMONIZE_DEFAULT
+    c->daemonize = 1;
+#else
+    c->daemonize = 0;
+#endif /* DAEMONIZE_DEFAULT */
+
     c->debug_fg = DEBUG_FG;
     c->drop_privileges = DROP_PRIVILEGES;
 

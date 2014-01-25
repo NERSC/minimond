@@ -25,8 +25,15 @@ void *default_collectors[] = {
 
 /* The default set of printer modules. */
 void *default_printers[] = {
+#if defined(EMBEDDEDGMETRIC) && defined(EMBEDDEDGMETRIC_DEFAULT)
+    embeddedgmetric_printer,
+#endif
+#if defined(GMETRIC) && defined(GMETRIC_DEFAULT)
     gmetric_printer,
-    /* text_printer, */
+#endif
+#if defined(TEXT_DEFAULT)
+    text_printer,
+#endif
     NULL };
 
 void process_all(config *c) {

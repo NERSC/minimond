@@ -14,6 +14,11 @@ typedef struct config {
     int daemonize;
     void **collectors;
     void **printers;
+
+# ifdef CONFIG_EMBEDDEDGMETRIC
+    char embg_host[MAX_LINE];
+    int embg_port;
+# endif /* CONFIG_EMBEDDEDGMETRIC */
 } config;
 
 #endif /* CONFIG_MODEL_H */

@@ -13,11 +13,13 @@ metric_collection *MetricsPrint(MetricHandler *print_func,
 /* Print all metrics in plain text. */
 metric_group *text_printer(metric_group *mg, config *c);
 
+#ifdef GMETRIC
 /* Send all metrics using the "gmetric" program, which is assumed to
  * be present. */
 metric_group *gmetric_printer(metric_group *mg, config *c);
+#endif /* GMETRIC */
 
-#ifdef CONFIG_SUPPORT_EMBEDDEDGMETRIC
+#ifdef EMBEDDEDGMETRIC
 /* Send all metrics using the "embeddedgmetric" library */
 metric_group *gmetric_printer(metric_group *mg, config *c);
 #endif /* CONFIG_SUPPORT_EMBEDDEDGMETRIC */
