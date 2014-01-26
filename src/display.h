@@ -21,7 +21,7 @@ metric_group *gmetric_printer(metric_group *mg, config *c);
 
 #ifdef EMBEDDEDGMETRIC
 /* Send all metrics using the "embeddedgmetric" library */
-metric_group *gmetric_printer(metric_group *mg, config *c);
+metric_group *embeddedgmetric_printer(metric_group *mg, config *c);
 #endif /* CONFIG_SUPPORT_EMBEDDEDGMETRIC */
 
 #endif /* DISPLAY_H */

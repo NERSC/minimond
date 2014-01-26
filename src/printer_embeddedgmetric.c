@@ -14,6 +14,7 @@
 
 
 metric_group *embeddedgmetric_printer(metric_group *mg, config *c) {
+    char buf[MAX_LINE];
     int i = 0;
     metric m;
 
@@ -23,7 +24,9 @@ metric_group *embeddedgmetric_printer(metric_group *mg, config *c) {
     gmetric_create(&g);
 
     if(!gmetric_open(&g, c->embg_host, c->embg_port)) {
-        log_str(LOG_DEBUG,"Failed to open EmbeddedGmetric connection: %s.  Metrics will not be sent during this collection period\n", strerror(errno));
+        log_str(LOG_DEBUG,
+                "Failed to open EmbeddedGmetric connection: %s.  Metrics will not be sent during this collection period\n",
+                strerror(errno));
         return mg;
     }
 
@@ -37,16 +40,18 @@ metric_group *embeddedgmetric_printer(metric_group *mg, config *c) {
 
         gmetric_message_clear(&g_msg);
 
+        snprintf(buf, MAX_LINE, "%.32s_%.32s", mg->name, m.name);
+        g_msg.name = buf;
 
 
         switch(mg->type) {
             case VALUE_INT:
-                g_msg.type = GMETRIC_VALUE_INT;
-                g_msg.value.v_int = m.val.i;
+                g_msg.type = GMETRIC_VALUE_UNSIGNED_INT;
+                g_msg.value.v_uint = m.val.i;
                 break;
             case VALUE_LONG:
-                g_msg.type = GMETRIC_VALUE_INT;
-                g_msg.value.v_int = m.val.l;
+                g_msg.type = GMETRIC_VALUE_UNSIGNED_INT;
+                g_msg.value.v_uint = m.val.l;
                 break;
             case VALUE_FLOAT:
                 g_msg.type = GMETRIC_VALUE_FLOAT;
@@ -63,8 +68,17 @@ metric_group *embeddedgmetric_printer(metric_group *mg, config *c) {
         g_msg.dmax = 0;
 
         if(gmetric_send(&g, &g_msg) == -1) {
-            log_str(LOG_DEBUG,"Failed to send on EmbeddedGmetric connection: %s.  Metrics will not be sent during this collection period\n", strerror(errno));
+            log_str(LOG_DEBUG,
+                    "Failed to send on EmbeddedGmetric connection: %s.  Metrics will not be sent during this collection period\n",
+                    strerror(errno));
         }
+#ifdef DEBUG
+        else {
+            log_str(LOG_DEBUG,
+                    "Sent on EmbeddedGmetric connection to %s:%d\n",
+                    c->embg_host, c->embg_port);
+        }
+#endif
 
 
 

@@ -54,6 +54,9 @@ if test "$with_embeddedgmetric" = "yes"; then
                                  wire protocol]))
 
     AC_SUBST(EMBEDDEDGMETRIC_LIBS)
+
+    AC_DEFINE([EMBEDDEDGMETRIC_DEFAULT], [],
+              [Enable EmbeddedGmetric by default])
 fi
 
 
