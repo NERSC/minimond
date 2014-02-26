@@ -70,10 +70,6 @@ AM_CONDITIONAL([SUPPORT_GMETRIC], [test "$with_gmetric" = "yes"])
 
 
 
-AM_CONFIG_HEADER(config.h)
-
-AC_OUTPUT(Makefile src/Makefile)
-
 AC_MSG_RESULT([
 
 ***********************************************************************
@@ -95,3 +91,7 @@ if test "$with_gmetric" = "yes"; then
         echo "Warning: Building with both Gmetric and EmbeddedGmetric is not recommended"
     fi
 fi
+
+AM_CONFIG_HEADER(config.h)
+
+AC_OUTPUT(Makefile src/Makefile)

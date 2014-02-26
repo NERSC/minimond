@@ -1,13 +1,13 @@
 /* printer_gmetric.c */
 
-#ifdef GMETRIC
-
 #include <errno.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "mingmond.h"
+
+#ifdef GMETRIC
 
 #define GMETRIC_COMMAND_SIZE 1024
 #define GMETRIC_VALUE_SIZE 128
