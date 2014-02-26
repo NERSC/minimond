@@ -36,7 +36,9 @@ void parse_args(int argc, char **argv, config *c) {
     char buf[MAX_LINE];
     char *s;
     int arg;
+#ifdef EMBEDDEDGMETRIC
     int count;
+#endif /* EMBEDDEDGMETRIC */
 
     if(!(ConfigDefaultCreate(c))) {
         fatal_error("Failed to load default configuration.\n");
@@ -63,6 +65,7 @@ void parse_args(int argc, char **argv, config *c) {
                     fatal_error("Unreasonably short value for -D option: %s\n", buf);
                 }
 
+#ifdef EMBEDDEDGMETRIC
                 if(!(strcmp(buf,"embg_host"))) {
                     s_strncpy(c->embg_host, s, MAX_LINE);
                 }
@@ -72,6 +75,8 @@ void parse_args(int argc, char **argv, config *c) {
                        fatal_error("Unable to handle port number: %s\n",buf);
                    }
                 }
+#endif /* EMBEDDEDGMETRIC */
+
                else {
                    fatal_error("Unknown option: %s\n", buf);
                }
