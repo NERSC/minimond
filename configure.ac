@@ -3,7 +3,7 @@ m4_define(PROJECT_EMAIL, [lmpezzaglia@lbl.gov])
 m4_define(PROJECT_TAR,   [mingmond])
 m4_define(PROJECT_MAJOR, 0)
 m4_define(PROJECT_MINOR, 0)
-m4_define(PROJECT_MICRO, 2)
+m4_define(PROJECT_MICRO, 3)
 
 
 AC_INIT(PROJECT_NAME, PROJECT_MAJOR.PROJECT_MINOR.PROJECT_MICRO,

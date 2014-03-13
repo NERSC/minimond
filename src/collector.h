@@ -19,6 +19,7 @@ metric_group *diskstats_collect(metric_group *mg);
 metric_group *loadavg_collect(metric_group *mg);
 metric_group *meminfo_collect(metric_group *mg);
 metric_group *micsmc_collect(metric_group *mg);
+metric_group *mmpmon_collect(metric_group *mg);
 metric_group *netdev_collect(metric_group *mg);
 
 metric_group *cpustat_collect_from_file(metric_group *mg, FILE *f);
@@ -26,6 +27,7 @@ metric_group *diskstats_collect_from_file(metric_group *mg, FILE *f);
 metric_group *loadavg_collect_from_file(metric_group *mg, FILE *f);
 metric_group *meminfo_collect_from_file(metric_group *mg, FILE *f);
 metric_group *micsmc_collect_from_file(metric_group *mg, FILE *f);
+metric_group *mmpmon_collect_from_file(metric_group *mg, FILE *f);
 metric_group *netdev_collect_from_file(metric_group *mg, FILE *f);
 
 void metric_file_open(FILE **metric_file, const char *filename);

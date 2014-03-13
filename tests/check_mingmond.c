@@ -28,6 +28,10 @@
 #define MICSMC_TEST_LOG "micsmc_test_log.txt"
 #define MICSMC_TEST_OUTPUT "micsmc_test_output.txt"
 
+#define MMPMON_TEST "mmpmon_test_input.txt"
+#define MMPMON_TEST_LOG "mmpmon_test_log.txt"
+#define MMPMON_TEST_OUTPUT "mmpmon_test_output.txt"
+
 #define PROCESS_ALL_TEST_LOG "process_all_test_log.txt"
 #define PROCESS_ALL_TEST_OUTPUT "process_all_test_output.txt"
 
@@ -161,6 +165,13 @@ START_TEST (test_micsmc_collect) {
 }
 END_TEST
 
+/* Test the mmpmon collector */
+START_TEST (test_mmpmon_collect) {
+    metric_collection_do(mmpmon_collect_from_file, MMPMON_TEST, MMPMON_TEST_LOG);
+    ck_assert(compare_files(MMPMON_TEST_LOG,MMPMON_TEST_OUTPUT));
+}
+END_TEST
+
 /* Test that we can build a default configuration. */
 START_TEST (test_cfg_build) {
     config cfg;
@@ -235,6 +246,7 @@ Suite *mingmond_suite (void) {
   tcase_add_test (tc_main, test_loadavg_collect);
   tcase_add_test (tc_main, test_meminfo_collect);
   tcase_add_test (tc_main, test_micsmc_collect);
+  tcase_add_test (tc_main, test_mmpmon_collect);
   tcase_add_test (tc_main, test_netdev_collect);
   tcase_add_test (tc_main, test_process_all);
 

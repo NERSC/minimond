@@ -1,0 +1,10 @@
+mmpmon node 10.2.3.4 name nodename-test io_s OK
+timestamp:      1394654569/386577
+bytes read:     9511417397542
+bytes written:  2552473262406
+opens:           284300504
+closes:          282580243
+reads:           605027087
+writes:         1513073537
+readdir:          11402901
+inode updates:     1920859
