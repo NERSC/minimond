@@ -11,11 +11,14 @@
 /* #define MMPMON "echo io_s | /usr/lpp/mmfs/bin/mmpmon -s" */
 #define MMPMON "/usr/lpp/mmfs/bin/mmpmon_printstats"
 
+#define GPFS_PRESENCE_FILE "/proc/fs/gpfs/version"
+
 metric_group *mmpmon_collect(metric_group *mg) {
     char cmd_buf[MAX_LINE];
     FILE *mmpmon = NULL;
 
-    if(access(MMPMON, X_OK) == 0) {
+    if( (access(MMPMON, X_OK) == 0) &&
+            (access(GPFS_PRESENCE_FILE, F_OK) == 0) ) {
 
         snprintf(cmd_buf, MAX_LINE, "sudo %s", MMPMON );
         log_str(LOG_DEBUG, "Running: %s\n",cmd_buf );
