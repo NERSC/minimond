@@ -24,10 +24,6 @@
 #define LOADAVG_TEST_LOG "loadavg_test_log.txt"
 #define LOADAVG_TEST_OUTPUT "loadavg_test_output.txt"
 
-#define MICSMC_TEST "micsmc_test_input.txt"
-#define MICSMC_TEST_LOG "micsmc_test_log.txt"
-#define MICSMC_TEST_OUTPUT "micsmc_test_output.txt"
-
 #define MMPMON_TEST "mmpmon_test_input.txt"
 #define MMPMON_TEST_LOG "mmpmon_test_log.txt"
 #define MMPMON_TEST_OUTPUT "mmpmon_test_output.txt"
@@ -158,13 +154,6 @@ START_TEST (test_loadavg_collect) {
 }
 END_TEST
 
-/* Test the micsmc collector */
-START_TEST (test_micsmc_collect) {
-    metric_collection_do(micsmc_collect_from_file, MICSMC_TEST, MICSMC_TEST_LOG);
-    ck_assert(compare_files(MICSMC_TEST_LOG,MICSMC_TEST_OUTPUT));
-}
-END_TEST
-
 /* Test the mmpmon collector */
 START_TEST (test_mmpmon_collect) {
     metric_collection_do(mmpmon_collect_from_file, MMPMON_TEST, MMPMON_TEST_LOG);
@@ -245,7 +234,6 @@ Suite *mingmond_suite (void) {
   tcase_add_test (tc_main, test_diskstats_collect);
   tcase_add_test (tc_main, test_loadavg_collect);
   tcase_add_test (tc_main, test_meminfo_collect);
-  tcase_add_test (tc_main, test_micsmc_collect);
   tcase_add_test (tc_main, test_mmpmon_collect);
   tcase_add_test (tc_main, test_netdev_collect);
   tcase_add_test (tc_main, test_process_all);

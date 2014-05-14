@@ -19,7 +19,6 @@ void *default_collectors[] = {
     diskstats_collect,
     loadavg_collect,
     meminfo_collect,
-    micsmc_collect,
     mmpmon_collect,
     netdev_collect,
     NULL };

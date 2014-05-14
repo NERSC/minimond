@@ -1,5 +1,5 @@
 lib_LTLIBRARIES = libmingmond.la
-libmingmond_la_SOURCES = args.c logging.c util.c storage.c display.c storage.h mingmond.h collector.h collector.c collector_meminfo.c printer_text.c collector_netdev.c collector_diskstats.c collector_loadavg.c collector_cpustat.c collector_micsmc.c collector_mmpmon.c
+libmingmond_la_SOURCES = args.c logging.c util.c storage.c display.c storage.h mingmond.h collector.h collector.c collector_meminfo.c printer_text.c collector_netdev.c collector_diskstats.c collector_loadavg.c collector_cpustat.c collector_mmpmon.c
 if SUPPORT_GMETRIC
 libmingmond_la_SOURCES += printer_gmetric.c
 endif
