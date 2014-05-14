@@ -1,6 +1,6 @@
-m4_define(PROJECT_NAME,  [mingmond])
+m4_define(PROJECT_NAME,  [minimond])
 m4_define(PROJECT_EMAIL, [lmpezzaglia@lbl.gov])
-m4_define(PROJECT_TAR,   [mingmond])
+m4_define(PROJECT_TAR,   [minimond])
 m4_define(PROJECT_MAJOR, 0)
 m4_define(PROJECT_MINOR, 0)
 m4_define(PROJECT_MICRO, 3)
@@ -23,7 +23,7 @@ AC_SUBST(CFLAGS)
 AM_INIT_AUTOMAKE
 AM_PROG_CC_C_O
 
-MG_ENABLE([logfile], [/var/log/mingmond.log], [Default logfile location])
+MG_ENABLE([logfile], [/var/log/minimond.log], [Default logfile location])
 MG_ENABLE([target_user], [ganglia], [Default privilege drop user])
 MG_ENABLE([daemonize_default], [yes], [Daemonize by default])
 

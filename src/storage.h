@@ -1,7 +1,7 @@
 /*
  * storage.h
  *
- * Definitions of mingmond data structrues
+ * Definitions of minimond data structrues
  *
  */
 

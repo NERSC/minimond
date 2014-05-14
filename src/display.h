@@ -3,7 +3,7 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#include "mingmond.h"
+#include "minimond.h"
 //#include "storage-model.h"
 
 /*Print all metrics in mc using print_func */

@@ -1,7 +1,7 @@
 /*
  * storage-model.h
  *
- * Definitions of mingmond data interface
+ * Definitions of minimond data interface
  *
  */
 

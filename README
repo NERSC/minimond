@@ -1,4 +1,4 @@
-mingmond is a "minimalist" approach to metrics collection, designed to
+minimond is a "minimalist" approach to metrics collection, designed to
 collect large numbers of metrics with minimal performance impact to
 the system on which it runs.  Any calculation of derived statistics is
 intended to be performed on a remote collection/analysis server.

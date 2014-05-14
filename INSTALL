@@ -7,17 +7,17 @@ Normal Installation
 ===================
 
 Under most circumstances, the following steps should be sufficient for building
-and installing mingmond into /usr/:
+and installing minimond into /usr/:
 
     ./autogen.sh
     ./configure --prefix=/usr
     make
     make install
 
-Additionally, redhat/init.d.mingmond is provided for RedHat-like systems that
+Additionally, redhat/init.d.minimond is provided for RedHat-like systems that
 support SysVinit initscripts.  It can be installed with:
 
-    install -o root -g root -m 755 redhat/init.d.mingmond /etc/rc.d/init.d/mingmond
+    install -o root -g root -m 755 redhat/init.d.minimond /etc/rc.d/init.d/minimond
 
 
 
@@ -25,7 +25,7 @@ support SysVinit initscripts.  It can be installed with:
 Running the Test Suite
 ======================
 
-mingmond includes a set of self-tests that use the check[1] testing framework.
+minimond includes a set of self-tests that use the check[1] testing framework.
 If the development files for check are available, the test suite can be run as
 follows:
 

@@ -1,4 +1,28 @@
-/* mingmond */
+/* minimond */
+
+/*
+ * MiniMond, Copyright (c) 2014, The Regents of the University of
+ * California, through Lawrence Berkeley National Laboratory (subject to
+ * receipt of any required approvals from the U.S. Dept. of Energy).  All
+ * rights reserved.
+ * 
+ * If you have questions about your rights to use or distribute this
+ * software, please contact Berkeley Lab's Technology Transfer Department
+ * at  TTD@lbl.gov.
+ * 
+ * NOTICE.  This software is owned by the U.S. Department of Energy.  As
+ * such, the U.S. Government has been granted for itself and others
+ * acting on its behalf a paid-up, nonexclusive, irrevocable, worldwide
+ * license in the Software to reproduce, prepare derivative works, and
+ * perform publicly and display publicly.  Beginning five (5) years after
+ * the date permission to assert copyright is obtained from the U.S.
+ * Department of Energy, and subject to any subsequent five (5) year
+ * renewals, the U.S. Government is granted for itself and others acting
+ * on its behalf a paid-up, nonexclusive, irrevocable, worldwide license
+ * in the Software to reproduce, prepare derivative works, distribute
+ * copies to the public, perform publicly and display publicly, and to
+ * permit others to do so.
+ */
 
 #define _GNU_SOURCE
 #include <ctype.h>
@@ -11,7 +35,7 @@
 #include <unistd.h>
 #include <pwd.h>
 #include <grp.h>
-#include "mingmond.h"
+#include "minimond.h"
 
 /* The default set of collector modules. */
 void *default_collectors[] = { 
@@ -61,27 +85,27 @@ void process_all(config *c) {
 
 void drop_privileges(char *user) {
 
-    struct passwd const *mingmond_u;
+    struct passwd const *minimond_u;
 
     /* Retrieve the passwd structure for the unprivileged user. */
     errno = 0;
-    mingmond_u = getpwnam(user);
+    minimond_u = getpwnam(user);
 
-    if (mingmond_u==NULL) {
+    if (minimond_u==NULL) {
         fatal_error("getpwnam failed for %s: %s\n", user, strerror(errno));
     }
 
     /* Drop privileges */
-    if( setgroups(1, &(mingmond_u->pw_gid)) != 0) {
+    if( setgroups(1, &(minimond_u->pw_gid)) != 0) {
       fatal_error("setgroups() failed: %s", strerror(errno));
     }
 
-    if(setresgid(mingmond_u->pw_gid, mingmond_u->pw_gid, mingmond_u->pw_gid) != 0 ) {
-      fatal_error("setresgid to %d failed: %s", mingmond_u->pw_gid, strerror(errno));
+    if(setresgid(minimond_u->pw_gid, minimond_u->pw_gid, minimond_u->pw_gid) != 0 ) {
+      fatal_error("setresgid to %d failed: %s", minimond_u->pw_gid, strerror(errno));
     }
 
-    if(setresuid(mingmond_u->pw_uid, mingmond_u->pw_uid, mingmond_u->pw_uid) != 0 ) {
-      fatal_error("setresuid to %d failed: %s", mingmond_u->pw_uid, strerror(errno));
+    if(setresuid(minimond_u->pw_uid, minimond_u->pw_uid, minimond_u->pw_uid) != 0 ) {
+      fatal_error("setresuid to %d failed: %s", minimond_u->pw_uid, strerror(errno));
     }
 }
 
