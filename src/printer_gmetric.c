@@ -65,6 +65,10 @@ metric_group *gmetric_printer(metric_group *mg, config *c) {
                 snprintf(type_buf, GMETRIC_VALUE_SIZE, "-t %s -v %f",
                         "float", m.val.f);
                 break;
+            case VALUE_DOUBLE:
+                snprintf(type_buf, GMETRIC_VALUE_SIZE, "-t %s -v %f",
+                        "double", m.val.d);
+                break;
             default:
                 fatal_error("Unsupported metric type\n");
                 break;
