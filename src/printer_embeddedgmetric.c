@@ -79,7 +79,11 @@ metric_group *embeddedgmetric_printer(metric_group *mg, config *c) {
                 break;
             case VALUE_FLOAT:
                 g_msg.type = GMETRIC_VALUE_FLOAT;
-                g_msg.value.v_int = m.val.f;
+                g_msg.value.v_float = m.val.f;
+                break;
+            case VALUE_DOUBLE:
+                g_msg.type = GMETRIC_VALUE_DOUBLE;
+                g_msg.value.v_double = m.val.d;
                 break;
             default:
                 fatal_error("Unsupported metric type: %d\n", mg->type);
