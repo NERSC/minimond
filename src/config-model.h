@@ -9,7 +9,9 @@ typedef struct config {
     char user[MAX_LINE];
     char logfile[MAX_LINE];
     char pidfile[MAX_LINE];
+    unsigned int collect_period;
     int drop_privileges;
+    int debug;
     int debug_fg;
     int daemonize;
     void **collectors;

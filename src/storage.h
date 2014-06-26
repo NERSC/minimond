@@ -23,6 +23,7 @@
 union metric_value {
     int i;
     long l;
+    unsigned long long llu;
     char c;
     float f;
     double d;
@@ -33,6 +34,7 @@ typedef union metric_value metric_value;
 enum metric_type {
     VALUE_INT,
     VALUE_LONG,
+    VALUE_ULLONG,
     VALUE_CHAR,
     VALUE_FLOAT,
     VALUE_DOUBLE

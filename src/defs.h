@@ -16,7 +16,13 @@
 /* Log messages to stdout by default */
 #define DEBUG_FG 0
 
-/* How often, in seconds, that metrics should be collected. */
+/* Log extra debugging info by default */
+#define DEBUG 0
+
+/* 
+ * How often, in seconds, that metrics should be collected, by
+ * default. 
+ * */
 #define COLLECT_PERIOD 120
 
 /*

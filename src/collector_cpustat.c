@@ -68,13 +68,13 @@ metric_group *cpustat_collect_from_file(metric_group *mg, FILE *f) {
 
     int count = 0;
     int metric_count = 0;
-    long unsigned d[METRIC_GROUP_MAX_SIZE];
+    long long unsigned d[METRIC_GROUP_MAX_SIZE];
     const char *labels[] = { "cpu_user", "cpu_nice", "cpu_system", "cpu_idle",
                              "cpu_wio", "cpu_intr", "cpu_sintr", "cpu_steal",
                              "cpu_guest", NULL, "boottime",
                              NULL };
 
-    mg->type = VALUE_LONG;
+    mg->type = VALUE_ULLONG;
     s_strncpy(mg->name, "cpustat", NAME_MAX);
 
     while (fgets(buf, MAX_LINE, f)) {
@@ -86,7 +86,7 @@ metric_group *cpustat_collect_from_file(metric_group *mg, FILE *f) {
                  * %s   d[0]      d[1]     d[2]     d[3]       d[4]     d[5]   d[6]    d[7]  d[8]
                  */
                 /*                       0   1   2   3   4   5   6   7   8 */
-                count = sscanf(buf," %32s %lu %lu %lu %lu %lu %lu %lu %lu %lu",
+                count = sscanf(buf," %32s %llu %llu %llu %llu %llu %llu %llu %llu %llu",
                         name_buf,
                         &d[0],
                         &d[1],
@@ -108,7 +108,7 @@ metric_group *cpustat_collect_from_file(metric_group *mg, FILE *f) {
 
             snprintf(name, MAX_LINE, "%s_%s", name_buf, labels[count] );
             s_strncpy(mg->metrics[metric_count].name, name, NAME_MAX);
-            mg->metrics[metric_count].val.l = d[count];
+            mg->metrics[metric_count].val.llu = d[count];
 
         }
 

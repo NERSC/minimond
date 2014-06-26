@@ -61,6 +61,11 @@ metric_group *gmetric_printer(metric_group *mg, config *c) {
                 snprintf(type_buf, GMETRIC_VALUE_SIZE, "-t %s -v %lu",
                         "int32", m.val.l);
                 break;
+            case VALUE_ULLONG:
+                /* Convert the value to a form supported by gmetric. */
+                snprintf(type_buf, GMETRIC_VALUE_SIZE, "-t %s -v %llu",
+                        "double", m.val.llu);
+                break;
             case VALUE_FLOAT:
                 snprintf(type_buf, GMETRIC_VALUE_SIZE, "-t %s -v %f",
                         "float", m.val.f);
@@ -76,13 +81,12 @@ metric_group *gmetric_printer(metric_group *mg, config *c) {
 
         snprintf(buf,GMETRIC_COMMAND_SIZE,
                 "gmetric -n '%.32s_%.32s' %.100s -u bytes -x %d",
-                mg->name, m.name, type_buf, COLLECT_PERIOD*3);
+                mg->name, m.name, type_buf, c->collect_period*3);
 
 
-
-#ifdef DEBUG
-        log_str(LOG_DEBUG,"system(%s)\n",buf);
-#endif
+        if(c->debug) {
+            log_str(LOG_DEBUG,"system(%s)\n",buf);
+        }
 
         ret = system(buf);
 

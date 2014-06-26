@@ -65,14 +65,14 @@ metric_group *mmpmon_collect_from_file(metric_group *mg, FILE *f) {
     char name_buf[MAX_LINE];
     int count = 0;
     int metric_count = 0;
-    unsigned long metric_value = 0;
+    unsigned long long metric_value = 0;
 
-    mg->type = VALUE_LONG;
+    mg->type = VALUE_ULLONG;
     s_strncpy(mg->name, "gpfs", NAME_MAX);
 
 
     while (fgets(buf, MAX_LINE, f)) {
-        count = sscanf(buf," %32[^\t:]:%lu",
+        count = sscanf(buf," %32[^\t:]:%llu",
                 name_buf,
                 &metric_value);
 
@@ -82,7 +82,7 @@ metric_group *mmpmon_collect_from_file(metric_group *mg, FILE *f) {
 
         MetricSetName(mg, metric_count, name);
 
-        mg->metrics[metric_count].val.l = metric_value;
+        mg->metrics[metric_count].val.llu = metric_value;
         metric_count_incr(&metric_count);
 
     }

@@ -46,7 +46,10 @@ metric_group *text_printer(metric_group *mg, config *c) {
                 log_str(LOG_EMERG,"int:%d\n", m.val.i);
                 break;
             case VALUE_LONG:
-                log_str(LOG_EMERG,"long:%lu\n", m.val.l);
+                log_str(LOG_EMERG,"long:%lu\n", m.val.llu);
+                break;
+            case VALUE_ULLONG:
+                log_str(LOG_EMERG,"long:%llu\n", m.val.llu);
                 break;
             case VALUE_FLOAT:
                 log_str(LOG_EMERG,"float:%f\n", m.val.f);

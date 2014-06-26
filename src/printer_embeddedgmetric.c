@@ -77,6 +77,11 @@ metric_group *embeddedgmetric_printer(metric_group *mg, config *c) {
                 g_msg.type = GMETRIC_VALUE_UNSIGNED_INT;
                 g_msg.value.v_uint = m.val.l;
                 break;
+            case VALUE_ULLONG:
+                /* Convert the value to a form supported by gmetric. */
+                g_msg.type = GMETRIC_VALUE_DOUBLE;
+                g_msg.value.v_double = (double)m.val.llu;
+                break;
             case VALUE_FLOAT:
                 g_msg.type = GMETRIC_VALUE_FLOAT;
                 g_msg.value.v_float = m.val.f;
@@ -92,7 +97,7 @@ metric_group *embeddedgmetric_printer(metric_group *mg, config *c) {
 
         g_msg.slope = GMETRIC_SLOPE_BOTH;
 
-        g_msg.tmax = COLLECT_PERIOD*3;
+        g_msg.tmax = c->collect_period*3;
         g_msg.dmax = 0;
 
         if(gmetric_send(&g, &g_msg) == -1) {
@@ -100,13 +105,27 @@ metric_group *embeddedgmetric_printer(metric_group *mg, config *c) {
                     "Failed to send on EmbeddedGmetric connection: %s.  Metrics will not be sent during this collection period\n",
                     strerror(errno));
         }
-#ifdef DEBUG
-        else {
-            log_str(LOG_DEBUG,
-                    "Sent on EmbeddedGmetric connection to %s:%d\n",
-                    c->embg_host, c->embg_port);
+        else if(c->debug) {
+            switch(mg->type) {
+                case VALUE_INT:
+                    break;
+                case VALUE_LONG:
+                    break;
+                case VALUE_FLOAT:
+                    break;
+                case VALUE_DOUBLE:
+                    log_str(LOG_DEBUG,
+                            "Sent %s:%lf on EmbeddedGmetric connection to %s:%d\n",
+                            g_msg.name,g_msg.value.v_double,
+                            c->embg_host, c->embg_port);
+                    break;
+                default:
+                    log_str(LOG_DEBUG,
+                            "Sent on EmbeddedGmetric connection to %s:%d\n",
+                            c->embg_host, c->embg_port);
+                    break;
         }
-#endif
+        }
 
 
 

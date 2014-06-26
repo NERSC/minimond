@@ -35,6 +35,7 @@ config *ConfigDefaultCreate(config *c) {
     s_strncpy(c->logfile, LOGFILE, MAX_LINE);
 
     c->pidfile[0] = '\0';
+    c->collect_period = COLLECT_PERIOD;
 
 #ifdef DAEMONIZE_DEFAULT
     c->daemonize = 1;
@@ -42,6 +43,7 @@ config *ConfigDefaultCreate(config *c) {
     c->daemonize = 0;
 #endif /* DAEMONIZE_DEFAULT */
 
+    c->debug = DEBUG;
     c->debug_fg = DEBUG_FG;
     c->drop_privileges = DROP_PRIVILEGES;
 
@@ -100,7 +102,24 @@ void parse_args(int argc, char **argv, config *c) {
                    }
                 }
 #endif /* EMBEDDEDGMETRIC */
-
+                else if(!(strcmp(buf,"collect_period"))) {
+                   count = sscanf(s,"%u", &(c->collect_period));
+                   if (count != 1) {
+                       fatal_error("Unable to handle period number: %s\n",buf);
+                   }
+                }
+                else if(!(strcmp(buf,"debug"))) {
+                   count = sscanf(s,"%u", &(c->debug));
+                   if (count != 1) {
+                       fatal_error("Unable to handle debug number: %s\n",buf);
+                   }
+                }
+                else if(!(strcmp(buf,"debug_fg"))) {
+                   count = sscanf(s,"%u", &(c->debug_fg));
+                   if (count != 1) {
+                       fatal_error("Unable to handle debug_fg number: %s\n",buf);
+                   }
+                }
                else {
                    fatal_error("Unknown option: %s\n", buf);
                }

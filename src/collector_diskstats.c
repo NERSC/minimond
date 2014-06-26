@@ -55,7 +55,7 @@ metric_group *diskstats_collect_from_file(metric_group *mg, FILE *f) {
     int count = 0;
     int metric_count = 0;
     int c=0;
-    long unsigned d[METRIC_GROUP_MAX_SIZE];
+    long long unsigned d[METRIC_GROUP_MAX_SIZE];
 
     /* These names are from mod_diskstat */
     const char *labels[] = { "readIO", "readMerge", "readSectors",
@@ -64,7 +64,7 @@ metric_group *diskstats_collect_from_file(metric_group *mg, FILE *f) {
                              "ioTicks", "inQueue", NULL
                            };
 
-    mg->type = VALUE_LONG;
+    mg->type = VALUE_ULLONG;
     s_strncpy(mg->name, "diskstats", NAME_MAX);
 
     while (fgets(buf, MAX_LINE, f)) {
@@ -74,7 +74,7 @@ metric_group *diskstats_collect_from_file(metric_group *mg, FILE *f) {
          * 8      17    sdb1 1887 3905 46336 29476   0    0     0     0     0     28308   29467
          * %*     %*    %s   d[0] d[1] d[2]  d[3]    d[4] d[5]  d[6]  d[7]  d[8]  d[9]    d[10]
          */
-        count = sscanf(buf," %*d %*d %32[^\t ] %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu %lu",
+        count = sscanf(buf," %*d %*d %32[^\t ] %llu %llu %llu %llu %llu %llu %llu %llu %llu %llu %llu",
                 name_buf,
                 &d[0],
                 &d[1],
@@ -98,7 +98,7 @@ metric_group *diskstats_collect_from_file(metric_group *mg, FILE *f) {
 
             MetricSetName(mg, metric_count, name);
 
-            mg->metrics[metric_count].val.l = d[count];
+            mg->metrics[metric_count].val.llu = d[count];
 
         }
 

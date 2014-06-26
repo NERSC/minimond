@@ -35,7 +35,9 @@ int main (int argc, char **argv) {
     parse_args(argc, argv, &cfg);
 
 #if SUPPORT_LOGFILE == 1
-    open_logfile(cfg.logfile);
+    if(!(cfg.debug_fg)) {
+        open_logfile(cfg.logfile);
+    }
 #endif /* SUPPORT_LOGFILE */
 
 #if SUPPORT_DAEMONIZE == 1
@@ -63,11 +65,13 @@ int main (int argc, char **argv) {
         fflush(logfile);
 #endif /* SUPPORT_LOGFILE */
 
-        sleep(COLLECT_PERIOD);
+        sleep(cfg.collect_period);
     }
 
 #ifdef SUPPORT_LOGFILE
-    close_logfile();
+    if(!(cfg.debug_fg)) {
+        close_logfile();
+    }
 #endif
 
     return(EXIT_SUCCESS);
