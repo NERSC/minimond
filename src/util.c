@@ -49,6 +49,9 @@ void *default_collectors[] = {
 
 /* The default set of printer modules. */
 void *default_printers[] = {
+#if defined(AMQP) && defined(AMQP_DEFAULT)
+    amqp_printer,
+#endif
 #if defined(EMBEDDEDGMETRIC) && defined(EMBEDDEDGMETRIC_DEFAULT)
     embeddedgmetric_printer,
 #endif

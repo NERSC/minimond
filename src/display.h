@@ -13,6 +13,11 @@ metric_collection *MetricsPrint(MetricHandler *print_func,
 /* Print all metrics in plain text. */
 metric_group *text_printer(metric_group *mg, config *c);
 
+#ifdef AMQP
+/* Send all metrics via AMQP */
+metric_group *amqp_printer(metric_group *mg, config *c);
+#endif /* AMQP */
+
 #ifdef GMETRIC
 /* Send all metrics using the "gmetric" program, which is assumed to
  * be present. */
@@ -22,6 +27,6 @@ metric_group *gmetric_printer(metric_group *mg, config *c);
 #ifdef EMBEDDEDGMETRIC
 /* Send all metrics using the "embeddedgmetric" library */
 metric_group *embeddedgmetric_printer(metric_group *mg, config *c);
-#endif /* CONFIG_SUPPORT_EMBEDDEDGMETRIC */
+#endif /* EMBEDDEDGMETRIC */
 
 #endif /* DISPLAY_H */

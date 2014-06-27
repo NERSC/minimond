@@ -55,8 +55,8 @@ config *ConfigDefaultCreate(config *c) {
 #ifdef AMQP
     s_strncpy(c->amqp_host, "localhost", MAX_LINE);
     c->amqp_port = 5672;
-    s_strncpy(c->amqp_exchange, "amqp_direct", MAX_LINE);
-    s_strncpy(c->amqp_routingkey, "nodestats", MAX_LINE);
+    s_strncpy(c->amqp_exchange, "", MAX_LINE);
+    s_strncpy(c->amqp_routingkey, "", MAX_LINE);
 #endif /* AMQP */
 
     c->collectors = default_collectors;
@@ -69,9 +69,7 @@ void parse_args(int argc, char **argv, config *c) {
     char buf[MAX_LINE];
     char *s;
     int arg;
-#ifdef EMBEDDEDGMETRIC
     int count;
-#endif /* EMBEDDEDGMETRIC */
 
     if(!(ConfigDefaultCreate(c))) {
         fatal_error("Failed to load default configuration.\n");
@@ -111,7 +109,13 @@ void parse_args(int argc, char **argv, config *c) {
 #endif /* EMBEDDEDGMETRIC */
 #ifdef AMQP
                 if(!(strcmp(buf,"amqp_host"))) {
-                    s_strncpy(c->embg_host, s, MAX_LINE);
+                    s_strncpy(c->amqp_host, s, MAX_LINE);
+                }
+                else if(!(strcmp(buf,"amqp_routingkey"))) {
+                    s_strncpy(c->amqp_routingkey, s, MAX_LINE);
+                }
+                else if(!(strcmp(buf,"amqp_exchange"))) {
+                    s_strncpy(c->amqp_exchange, s, MAX_LINE);
                 }
                 else if(!(strcmp(buf,"amqp_port"))) {
                    count = sscanf(s,"%d", &(c->amqp_port));
@@ -136,6 +140,12 @@ void parse_args(int argc, char **argv, config *c) {
                    count = sscanf(s,"%u", &(c->debug_fg));
                    if (count != 1) {
                        fatal_error("Unable to handle debug_fg number: %s\n",buf);
+                   }
+                }
+                else if(!(strcmp(buf,"drop_privileges"))) {
+                   count = sscanf(s,"%u", &(c->drop_privileges));
+                   if (count != 1) {
+                       fatal_error("Unable to handle drop_privileges number: %s\n",buf);
                    }
                 }
                else {
