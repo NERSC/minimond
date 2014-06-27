@@ -19,6 +19,7 @@ metric_group *amqp_printer(metric_group *mg, config *c) {
     char buf[MAX_LINE];
     int i = 0;
     metric m;
+    int ret;
 
 
     amqp_socket_t *socket = NULL;
@@ -35,10 +36,11 @@ metric_group *amqp_printer(metric_group *mg, config *c) {
         return mg;
     }
 
-    if(!amqp_socket_open(socket, c->amqp_host, c->amqp_port)) {
+    ret = amqp_socket_open(socket, c->amqp_host, c->amqp_port);
+    if(ret != AMQP_STATUS_OK) {
         log_str(LOG_DEBUG,
-                "Failed to open amqp socket: %s.  Metrics will not be sent during this collection period\n",
-                strerror(errno));
+                "Failed to open amqp socket %s:%d: %d.  Metrics will not be sent during this collection period\n",
+                c->amqp_host, c->amqp_port, ret);
         return mg;
     }
 
@@ -84,14 +86,14 @@ metric_group *amqp_printer(metric_group *mg, config *c) {
                 break;
         }
 
-        if(!(amqp_basic_publish(conn,
+        if(amqp_basic_publish(conn,
                 1,
                 amqp_cstring_bytes(c->amqp_exchange),
                 amqp_cstring_bytes(c->amqp_routingkey),
                 0,
                 0,
                 &props,
-                amqp_cstring_bytes(buf)))) {
+                amqp_cstring_bytes(buf)) != AMQP_STATUS_OK ) {
             log_str(LOG_DEBUG,
                     "Failed to send on AMQP connection: %s.  Metrics will not be sent during this collection period\n",
                     strerror(errno));
