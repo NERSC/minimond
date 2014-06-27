@@ -52,6 +52,13 @@ config *ConfigDefaultCreate(config *c) {
     c->embg_port = 8649;
 #endif /* EMBEDDEDGMETRIC */
 
+#ifdef AMQP
+    s_strncpy(c->amqp_host, "localhost", MAX_LINE);
+    c->amqp_port = 5672;
+    s_strncpy(c->amqp_exchange, "amqp_direct", MAX_LINE);
+    s_strncpy(c->amqp_routingkey, "nodestats", MAX_LINE);
+#endif /* AMQP */
+
     c->collectors = default_collectors;
     c->printers = default_printers;
 
@@ -102,6 +109,17 @@ void parse_args(int argc, char **argv, config *c) {
                    }
                 }
 #endif /* EMBEDDEDGMETRIC */
+#ifdef AMQP
+                if(!(strcmp(buf,"amqp_host"))) {
+                    s_strncpy(c->embg_host, s, MAX_LINE);
+                }
+                else if(!(strcmp(buf,"amqp_port"))) {
+                   count = sscanf(s,"%d", &(c->amqp_port));
+                   if (count != 1) {
+                       fatal_error("Unable to handle period number: %s\n",buf);
+                   }
+                }
+#endif /* AMQP */
                 else if(!(strcmp(buf,"collect_period"))) {
                    count = sscanf(s,"%u", &(c->collect_period));
                    if (count != 1) {

@@ -7,6 +7,10 @@ if SUPPORT_EMBEDDEDGMETRIC
 libminimond_la_SOURCES += printer_embeddedgmetric.c
 libminimond_la_LIBADD = $(EMBEDDEDGMETRIC_LIBS)
 endif
+if SUPPORT_AMQP
+libminimond_la_SOURCES += printer_amqp.c
+libminimond_la_LIBADD = $(AMQP_LIBS)
+endif
 
 sbin_PROGRAMS = minimond
 minimond_SOURCES = main.c

@@ -21,6 +21,13 @@ typedef struct config {
     char embg_host[MAX_LINE];
     int embg_port;
 # endif /* EMBEDDEDGMETRIC */
+
+# ifdef AMQP
+    char amqp_host[MAX_LINE];
+    char amqp_exchange[MAX_LINE];
+    char amqp_routingkey[MAX_LINE];
+    int amqp_port;
+# endif /* AMQP */
 } config;
 
 #endif /* CONFIG_MODEL_H */

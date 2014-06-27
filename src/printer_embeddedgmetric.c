@@ -106,14 +106,8 @@ metric_group *embeddedgmetric_printer(metric_group *mg, config *c) {
                     strerror(errno));
         }
         else if(c->debug) {
-            switch(mg->type) {
-                case VALUE_INT:
-                    break;
-                case VALUE_LONG:
-                    break;
-                case VALUE_FLOAT:
-                    break;
-                case VALUE_DOUBLE:
+            switch(g_msg.type) {
+                case GMETRIC_VALUE_DOUBLE:
                     log_str(LOG_DEBUG,
                             "Sent %s:%lf on EmbeddedGmetric connection to %s:%d\n",
                             g_msg.name,g_msg.value.v_double,
