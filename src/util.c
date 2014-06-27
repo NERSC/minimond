@@ -52,6 +52,9 @@ void *default_printers[] = {
 #if defined(AMQP) && defined(AMQP_DEFAULT)
     amqp_printer,
 #endif
+#if defined(AMQPLOGGER) && defined(AMQPLOGGER_DEFAULT)
+    amqplogger_printer,
+#endif
 #if defined(EMBEDDEDGMETRIC) && defined(EMBEDDEDGMETRIC_DEFAULT)
     embeddedgmetric_printer,
 #endif

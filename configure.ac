@@ -27,7 +27,8 @@ MG_ENABLE([logfile], [/var/log/minimond.log], [Default logfile location])
 MG_ENABLE([target_user], [ganglia], [Default privilege drop user])
 MG_ENABLE([daemonize_default], [yes], [Daemonize by default])
 
-MG_WITH([amqp], [no], [AMQP support])
+MG_WITH([amqplogger], [no], [amqpLogger support])
+MG_WITH([rabbitmq], [no], [RabbitMQ support])
 MG_WITH([check], [no], [Build "check" tests])
 MG_WITH([embeddedgmetric], [no], [EmbeddedGmetric support])
 MG_WITH([gmetric], [yes], [Gmetric support])
@@ -60,7 +61,7 @@ if test "$with_embeddedgmetric" = "yes"; then
               [Enable EmbeddedGmetric by default])
 fi
 
-if test "$with_amqp" = "yes"; then
+if test "$with_rabbitmq" = "yes"; then
     dnl AC_DEFINE([DAMQP], [], [Support AMQP via librabbitmq-c])
 
     AC_CHECK_HEADER([amqp.h], [],
@@ -77,9 +78,30 @@ if test "$with_amqp" = "yes"; then
               [Enable AMQP by default])
 fi
 
+if test "$with_amqplogger" = "yes"; then
+    dnl AC_DEFINE([DAMQP], [], [Support AMQP via amqpLogger])
+
+    AC_CHECK_HEADER([amqpLogger.h], [],
+                 AC_MSG_FAILURE([Couldn't find amqpLogger.h]), [])
+
+    AC_CHECK_LIB([rt], [clock_gettime],
+                 AMQP_LIBS="-lrt",
+                 AC_MSG_FAILURE([Couldn't find -lrt]))
+
+    AC_CHECK_LIB([amqpLogger], [amqpLogger_lograw],
+                 AMQP_LIBS="-lamqpLogger $AMQP_LIBS",
+                 AC_MSG_FAILURE([Couldn't find -lamqpLogger]))
 
 
-AM_CONDITIONAL([SUPPORT_AMQP], [test "$with_amqp" = "yes"])
+    AC_SUBST(AMQPLOGGER_LIBS)
+
+    AC_DEFINE([AMQPLOGGER_DEFAULT], [],
+              [Enable amqpLogger by default])
+fi
+
+
+AM_CONDITIONAL([SUPPORT_AMQPLOGGER], [test "$with_amqplogger" = "yes"])
+AM_CONDITIONAL([SUPPORT_AMQP], [test "$with_rabbitmq" = "yes"])
 AM_CONDITIONAL([SUPPORT_CHECK], [test "$with_check" = "yes"])
 AM_CONDITIONAL([SUPPORT_EMBEDDEDGMETRIC], [test "$with_embeddedgmetric" = "yes"])
 AM_CONDITIONAL([SUPPORT_GMETRIC], [test "$with_gmetric" = "yes"])
@@ -98,7 +120,8 @@ AC_MSG_RESULT([
 *   Log file location....................$enable_logfile
 *   Target user..........................$enable_target_user
 *   "make check" support ................$with_check
-*   AMQP support.........................$with_amqp
+*   RabbitMQ support.....................$with_rabbitmq
+*   amqpLogger support...................$with_amqplogger
 *   EmbeddedGmetric support..............$with_embeddedgmetric
 *   Gmetric support......................$with_gmetric
 ***********************************************************************

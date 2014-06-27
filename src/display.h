@@ -18,6 +18,11 @@ metric_group *text_printer(metric_group *mg, config *c);
 metric_group *amqp_printer(metric_group *mg, config *c);
 #endif /* AMQP */
 
+#ifdef AMQPLOGGER
+/* Send all metrics via amqpLogger */
+metric_group *amqplogger_printer(metric_group *mg, config *c);
+#endif /* AMQPLOGGER */
+
 #ifdef GMETRIC
 /* Send all metrics using the "gmetric" program, which is assumed to
  * be present. */
