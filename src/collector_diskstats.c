@@ -54,7 +54,6 @@ metric_group *diskstats_collect_from_file(metric_group *mg, FILE *f) {
 
     int count = 0;
     int metric_count = 0;
-    int c=0;
     long unsigned d[METRIC_GROUP_MAX_SIZE];
 
     /* These names are from mod_diskstat */
@@ -68,7 +67,6 @@ metric_group *diskstats_collect_from_file(metric_group *mg, FILE *f) {
     s_strncpy(mg->name, "diskstats", NAME_MAX);
 
     while (fgets(buf, MAX_LINE, f)) {
-        c=0;
         /*
          * maj    min   dev  rIO  rMer rSec  rTick   wIO  wMer  wSec  wTick inFli ioTick  inQueue
          * 8      17    sdb1 1887 3905 46336 29476   0    0     0     0     0     28308   29467
